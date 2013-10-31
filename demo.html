@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkpoint.js Demo</title>
+    <link rel="stylesheet" type="text/css" href="checkpoint.css" />
+</head>
+<body>
+    <div style="text-align: center"><h1>Checkpoint.js Demo</h1></div>
+    <br/>
+
+    <div id="checkpoint" style="text-align: center; margin-left: 27px;"></div>
+
+    <div style="text-align: center; margin-top: 50px;">
+        <button onclick="var checkpoint = checkpointJs('#checkpoint').setStages(['stage1'], ['stage2'], ['stage3'], ['stage4'], ['stage5']).init();">Init</button>
+        <button onclick="checkpoint.prev();">Prev</button>
+        <button onclick="checkpoint.next();">Next</button>
+        <button onclick="checkpoint.removeStage(3);">Remove 4th Stage</button>
+        <button onclick="checkpoint.atStage(3);">Set Current Stage</button>
+        <button onclick="checkpoint.complete();">Complete</button>
+        <button onclick="checkpoint.reset();">Reset</button>
+        <button onclick="checkpoint.destroy();">Destroy</button>
+    </div>
+    <script src="checkpoint.js"></script>
+    <script src="demo.js"></script>
+</body>
+</html>
