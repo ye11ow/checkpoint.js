@@ -32,6 +32,14 @@
         };
     }
 
+    var DEFAULT_STAGE = {
+        id: "",
+        title: "",
+        type: "node",
+        description: "",
+        onStageCallback: null
+    };
+
     /**
      * Constructor of Stage.
      * Stage is the basic component of CheckpointJs. Each Stage refers a checkpoint of CheckpointJs.
@@ -44,17 +52,29 @@
      * @param arg the argument that used for constructing a Stage.
      */
     function Stage(arg) {
-        if (Object.prototype.toString.call( arg ) === '[object Array]'){
-            this.title = arg[0];
-            this.type = "node";
-            if (arg.length === 2 && typeof arg[1] == "String") {
-                this.description = arg[1];
-            } else {
-                this.description = "";
+        /* Set default */
+        for (var attr in DEFAULT_STAGE) {
+            this[attr] = arg[attr];
+        }
+
+        /* 1. Use an Object to construct Stage */
+        if (typeof arg === "object"){
+            for (var attr in arg) {
+                this[attr] = arg[attr];
             }
-        } else {
+        }
+        /* 2. Use a String to construct Stage */
+        else if (typeof arg === "string") {
+            this.id = "";
+            this.title = arg;
+            this.type = "node";
+            this.description = "";
+        }
+        /* 3. Wrong Constructor */
+        else {
             return null;
         }
+        return this;
     }
 
     /**
@@ -141,6 +161,7 @@
 
     /**
      * Mark all Stages before the index one as done. Mark all Stages after the index one as todo.
+     * The callee must make sure the  index is correct.
      *
      * @private
      */
@@ -156,6 +177,11 @@
         }
         var stageDom = document.querySelector(  '#' + checkpointId + ' > [data-index="' + index + '"]' );
         stageDom.setAttribute( "class", "checkpoint-block checkpoint-current" );
+
+        /* OnStage Callback */
+        if (typeof this.stages[index].onStageCallback === "function") {
+            this.stages[index].onStageCallback(this.stages[index]);
+        }
     }
 
     /**
@@ -190,10 +216,14 @@
         blockConnectorDom.setAttribute( "class", "checkpoint-block-connector" );
 
         var stageDom = document.createElement( "div" );
+        if (typeof stage.id === "string") {
+            stageDom.setAttribute( "id", stage.id );
+        }
         stageDom.setAttribute( "class", "checkpoint-block" );
         stageDom.setAttribute( "data-index", index );
         stageDom.setAttribute( "data-role", "checkpoint-block" );
         stageDom.appendChild(blockBodyDom);
+
         if ( stage.type != "end" ) {
             stageDom.appendChild(blockConnectorDom);
         }
@@ -207,12 +237,28 @@
      * @param arguments an array of Stage constructor.
      */
     function _setStages() {
-        for(var index in arguments) {
-            var stage = new Stage(arguments[index]);
-            if ( stage != null ) {
-                this.stages.push(stage);
-            } else {
-                console.log( "[CheckpointJS] Wrong stage parameters." );
+        /* Use a single String array to construct Stages */
+        if (arguments.length === 1 && Object.prototype.toString.call( arguments[0] ) === '[object Array]') {
+            var args = arguments[0];
+            for(var index in args) {
+                var title = args[index];
+                if (typeof title === "string") {
+                    this.stages.push(new Stage(title));
+                }
+                else {
+                    console.log( "[CheckpointJS] Wrong stage parameters." );
+                }
+            }
+        }
+        /* Use Stage Object to construct Stages  */
+        else {
+            for(var index in arguments) {
+                var stage = new Stage(arguments[index]);
+                if ( stage != null ) {
+                    this.stages.push(stage);
+                } else {
+                    console.log( "[CheckpointJS] Wrong stage parameters." );
+                }
             }
         }
         return this;
@@ -225,7 +271,7 @@
      * @param arg the argument that used for constructing the Stage.
      */
     function _setStage(index, arg) {
-        if (typeof stage == "object") {
+        if (typeof stage === "object") {
             if (index >= 0 && index <= this.stages.length - 1) {
                 var stage = new Stage(arg);
                 if ( stage != null ) {

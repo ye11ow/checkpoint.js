@@ -17,6 +17,7 @@
             height: 16px;
             width: 16px;
             border: 2px solid #959595;
+            box-sizing: initial;
         }
         .checkpoint-done > * > .checkpoint-block-indicator {
             background-color: #4793C4;

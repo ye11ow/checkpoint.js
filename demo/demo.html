@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkpoint.js Demo</title>
+    <link rel="stylesheet" type="text/css" href="../checkpoint.css" />
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+</head>
+<body style="background-image: url(img/noisy.png)">
+    <div style="text-align: center"><h1>Checkpoint.js Demo</h1></div>
+    <br/><br/>
+
+    <div id="checkpoint" style="text-align: center; margin-left: 40px;"></div>
+
+    <div class="row">
+        <div class="col-lg-offset-4 col-lg-4">
+            <ul class="pager" style="position: relative; top: -65px;">
+                <li class="previous"><a href="#" data-btn="checkpointjs-prev">&larr; Prev</a></li>
+                <li class="next"><a href="#"  id="checkpointjs-next" data-btn="checkpointjs-next">Next &rarr;</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="stage-header row">
+        <div class="tab-content col-lg-offset-3 col-lg-6">
+            <h1 id="current-stage-description"></h1>
+            <hr/>
+        </div>
+    </div>
+
+
+    <div class="stage-details row">
+        <div class="tab-content col-lg-offset-3 col-lg-6">
+            <div class="tab-pane active" id="introduction-tab" data-toggle="tab" href="#introduction-tab">
+                <p><b>Checkpoint.js</b> is a Javascript library that allows you to create a user interface like the <b>above one</b> in seconds.</p>
+                <br/>
+                <h3>Here are some highlights: </h3>
+                <ul>
+                    <li><b>Pure</b> Javascript/Css, no other library/framework needed</li>
+                </ul>
+                <br/>
+                <h3><b>Checkpoint.js</b> can be used in the following scenarios: </h3>
+                <ul>
+                    <li>Status Indicator</li>
+                    <li>Wizard</li>
+                    <li>Timeline</li>
+                    <li>Progress Bar</li>
+                </ul>
+                <br/>
+                <p>Click <b>Next</b> button to see some examples.</p>
+            </div>
+            <div class="tab-pane" id="examples-tab" data-toggle="tab" href="#examples-tab">Examples</div>
+            <div class="tab-pane" id="usage-tab" data-toggle="tab" href="#usage-tab">Usage</div>
+            <div class="tab-pane" id="download-tab" data-toggle="tab" href="#download-tab">Download</div>
+            <div class="tab-pane" id="history-tab" data-toggle="tab" href="#history-tab">history</div>
+            <div class="tab-pane" id="thanks-tab" data-toggle="tab" href="#thanks-tab">thanks</div>
+        </div>
+    </div>
+
+    <script src="../checkpoint.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <script src="demo.js"></script>
+
+</body>
+</html>
