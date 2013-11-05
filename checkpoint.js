@@ -81,10 +81,15 @@
      * Initialize the CheckpointJs.
      * This function firstly cleans everything within the CheckpointJs container.
      * Then add the DOM of CheckpointJs to that container.
+     *
+     * @param at
      */
-    function _init() {
+    function _init(at) {
         this.destroy();
         if (typeof this.checkpointJs == "object") {
+            if (typeof at != "number") {
+                at = 0;
+            }
             for (var index in this.stages) {
                 if ( index == 0 ) {
                     this.stages[index].type = "start";
@@ -95,6 +100,7 @@
                 var stageDom = _createDomFromStage(stage, index);
                 this.checkpointJs.appendChild(stageDom);
             }
+            this.currentIndex = at;
             _markStages.call(this, this.currentIndex);
             return this;
         }
@@ -236,27 +242,14 @@
      *
      * @param arguments an array of Stage constructor.
      */
-    function _setStages() {
-        /* Use a single String array to construct Stages */
-        if (arguments.length === 1 && Object.prototype.toString.call( arguments[0] ) === '[object Array]') {
-            var args = arguments[0];
-            for(var index in args) {
-                var title = args[index];
-                if (typeof title === "string") {
-                    this.stages.push(new Stage(title));
+    function _setStages(stages) {
+        if (Object.prototype.toString.call( stages ) === '[object Array]') {
+            for(var index in stages) {
+                var stage = stages[index];
+                if (typeof stage === "string" || typeof stage === "object") {
+                    this.stages.push(new Stage(stage));
                 }
                 else {
-                    console.log( "[CheckpointJS] Wrong stage parameters." );
-                }
-            }
-        }
-        /* Use Stage Object to construct Stages  */
-        else {
-            for(var index in arguments) {
-                var stage = new Stage(arguments[index]);
-                if ( stage != null ) {
-                    this.stages.push(stage);
-                } else {
                     console.log( "[CheckpointJS] Wrong stage parameters." );
                 }
             }
@@ -327,13 +320,19 @@
         return this;
     }
 
+
     var checkpointJs = function (targetSelector) {
         var target = document.querySelector(targetSelector);
         if (target == null) {
             console.log( "[CheckpointJS] Wrong selector." );
             return null;
         } else {
-            return new CheckpointJs(target);
+            var checkpoint = new CheckpointJs(target);
+            if (arguments.length > 1) {
+                var args = Array.prototype.slice.call(arguments);
+                checkpoint.setStages(args.splice(1, args.length - 1));
+            }
+            return checkpoint;
         }
     };
 
