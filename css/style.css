@@ -1,0 +1,27 @@
+.large-circle {
+    top: 80px;
+    height: 100px;
+    margin-left: 265px;
+    width: 600px;
+    position: absolute;
+    background-image: url(../img/large-circle.png);
+    display:none;
+}
+
+/* Tabs */
+
+    /* 1. introduction */
+    #trick-word {
+        font-size: 19px;
+        text-decoration: underline;
+    }
+    .todo {
+        color: #ddd;
+    }
+
+    /* 2. examples */
+    .sample-checkpoint {
+        margin-top: 20px;
+        margin-left: 100px;
+    }
+

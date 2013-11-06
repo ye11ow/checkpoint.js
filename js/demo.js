@@ -67,6 +67,15 @@ $("document").ready(function(){
 
     console.log(checkpoint);
 
+    $("#trick-word").hover( function(){
+        $(".large-circle").animate({
+            opacity: "show"
+        }, 400 );
+    }, function(){
+        $(".large-circle").animate({
+            opacity: "hide"
+        }, "slow" );
+    });
     /**/
 
 

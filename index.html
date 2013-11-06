@@ -2,11 +2,14 @@
 <html>
 <head>
     <title>Checkpoint.js Demo</title>
-    <link rel="stylesheet" type="text/css" href="css/checkpoint.css" />
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/checkpoint.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/prism.css"  />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body style="background-image: url(img/noisy.png)">
 <div class="container">
+    <div class="large-circle"></div>
     <div style="text-align: center"><h1>Checkpoint.js Demo</h1></div>
     <br/><br/>
 
@@ -32,15 +35,17 @@
     <div class="stage-details row">
         <div class="tab-content col-lg-offset-2 col-lg-8">
             <div class="tab-pane active" id="introduction-tab" data-toggle="tab" href="#introduction-tab">
-                <p><b>Checkpoint.js</b> is a Javascript library that allows you to create a user interface like the <b>above one</b> in seconds.</p>
+                <p><b>Checkpoint.js</b> is a Javascript library that allows you to create a user interface like the <b id="trick-word">above one</b> in seconds.</p>
                 <br/>
-                <h3>Here are some highlights: </h3>
+                <p>Here are some highlights: </p>
                 <ul>
                     <li><b>Pure</b> Javascript/Css, no other library/framework needed</li>
                     <li><b>4KB</b> Javascript, <b>2KB</b> CSS</li>
+                    <li class="todo"><b>Customize</b> your own CSS stylesheets (Using <a href="http://lesscss.org/" target="_blank">LESS</a>)</li>
+                    <li>Open source under <b>MIT</b> license </li>
                 </ul>
                 <br/>
-                <h3><b>Checkpoint.js</b> can be used in the following scenarios: </h3>
+                <p><b>Checkpoint.js</b> can be used in the following scenarios: </p>
                 <ul>
                     <li>Status Indicator</li>
                     <li>Wizard</li>
@@ -52,16 +57,20 @@
             </div>
             <div class="tab-pane" id="examples-tab" data-toggle="tab" href="#examples-tab">
                 <h3>Status Indicator</h3>
-                <div id="status-demo"></div>
+                <div id="status-demo" class="sample-checkpoint"></div>
                 <h3>Wizard</h3>
-                <div id="wizard-demo"></div>
+                <div id="wizard-demo" class="sample-checkpoint"></div>
                 <h3>Progress Bar</h3>
-                <div id="progress-demo"></div>
+                <div id="progress-demo" class="sample-checkpoint"></div>
                 <h3>Timeline</h3>
-                <div id="timeline-demo"></div>
+                <div id="timeline-demo" class="sample-checkpoint"></div>
             </div>
 
-            <div class="tab-pane" id="usage-tab" data-toggle="tab" href="#usage-tab">Usage</div>
+            <div class="tab-pane" id="usage-tab" data-toggle="tab" href="#usage-tab">
+                <h3>init</h3>
+                <code>checkpointJs(querySelector, stage1, stage2...);</code>
+                <pre><code class="language-javascript">var checkpoint = checkpointJs("#checkpoint");</code></pre>
+            </div>
             <div class="tab-pane" id="download-tab" data-toggle="tab" href="#download-tab">Download</div>
             <div class="tab-pane" id="history-tab" data-toggle="tab" href="#history-tab">history</div>
             <div class="tab-pane" id="thanks-tab" data-toggle="tab" href="#thanks-tab">thanks</div>
@@ -79,9 +88,10 @@
 </div>
 
     <script src="js/checkpoint.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/demo.js"></script>
+    <script src="js/prism.js"></script>
 
 </body>
 </html>
