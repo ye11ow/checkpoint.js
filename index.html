@@ -1,50 +1,87 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Checkpoint.js Demo</title>
+    <link rel="stylesheet" type="text/css" href="css/checkpoint.css" />
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+</head>
+<body style="background-image: url(img/noisy.png)">
+<div class="container">
+    <div style="text-align: center"><h1>Checkpoint.js Demo</h1></div>
+    <br/><br/>
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Checkpoint.js : " />
+    <div id="checkpoint" style="text-align: center; margin-left: 40px;"></div>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Checkpoint.js</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/ye11ow/checkpoint.js">View on GitHub</a>
-
-          <h1 id="project_title">Checkpoint.js</h1>
-          <h2 id="project_tagline"></h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/ye11ow/checkpoint.js/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/ye11ow/checkpoint.js/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <ul class="pager" style="position: relative; top: -65px;">
+                <li class="previous"><a href="#" data-btn="checkpointjs-prev">&larr; Prev</a></li>
+                <li class="next"><a href="#"  id="checkpointjs-next" data-btn="checkpointjs-next">Next &rarr;</a></li>
+            </ul>
+        </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="checkpointjs" class="anchor" href="#checkpointjs"><span class="octicon octicon-link"></span></a>checkpoint.js</h1>
-      </section>
+    <div class="stage-header row">
+        <div class="tab-content col-lg-offset-2 col-lg-8">
+            <h1 id="current-stage-description"></h1>
+            <hr/>
+        </div>
     </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Checkpoint.js maintained by <a href="https://github.com/ye11ow">ye11ow</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
+
+    <div class="stage-details row">
+        <div class="tab-content col-lg-offset-2 col-lg-8">
+            <div class="tab-pane active" id="introduction-tab" data-toggle="tab" href="#introduction-tab">
+                <p><b>Checkpoint.js</b> is a Javascript library that allows you to create a user interface like the <b>above one</b> in seconds.</p>
+                <br/>
+                <h3>Here are some highlights: </h3>
+                <ul>
+                    <li><b>Pure</b> Javascript/Css, no other library/framework needed</li>
+                    <li><b>4KB</b> Javascript, <b>2KB</b> CSS</li>
+                </ul>
+                <br/>
+                <h3><b>Checkpoint.js</b> can be used in the following scenarios: </h3>
+                <ul>
+                    <li>Status Indicator</li>
+                    <li>Wizard</li>
+                    <li>Progress Bar</li>
+                    <li>Timeline</li>
+                </ul>
+                <br/>
+                <p>Click <b>Next</b> button to see some examples.</p>
+            </div>
+            <div class="tab-pane" id="examples-tab" data-toggle="tab" href="#examples-tab">
+                <h3>Status Indicator</h3>
+                <div id="status-demo"></div>
+                <h3>Wizard</h3>
+                <div id="wizard-demo"></div>
+                <h3>Progress Bar</h3>
+                <div id="progress-demo"></div>
+                <h3>Timeline</h3>
+                <div id="timeline-demo"></div>
+            </div>
+
+            <div class="tab-pane" id="usage-tab" data-toggle="tab" href="#usage-tab">Usage</div>
+            <div class="tab-pane" id="download-tab" data-toggle="tab" href="#download-tab">Download</div>
+            <div class="tab-pane" id="history-tab" data-toggle="tab" href="#history-tab">history</div>
+            <div class="tab-pane" id="thanks-tab" data-toggle="tab" href="#thanks-tab">thanks</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <ul class="pager">
+                <li class="previous"><a href="#" data-btn="checkpointjs-prev">&larr; Prev</a></li>
+                <li class="next"><a href="#"  id="checkpointjs-next" data-btn="checkpointjs-next">Next &rarr;</a></li>
+            </ul>
+        </div>
     </div>
 
-    
+</div>
 
-  </body>
+    <script src="js/checkpoint.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <script src="js/demo.js"></script>
+
+</body>
 </html>
