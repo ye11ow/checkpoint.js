@@ -65,10 +65,7 @@
         }
         /* 2. Use a String to construct Stage */
         else if (typeof arg === "string") {
-            this.id = "";
             this.title = arg;
-            this.type = "node";
-            this.description = "";
         }
         /* 3. Wrong Constructor */
         else {
@@ -174,14 +171,14 @@
     function _markStages(index) {
         var checkpointId = this.checkpointJs.getAttribute( "id" );
         for (var i = 0;i < index;i++) {
-            var stageDom = document.querySelector(  '#' + checkpointId + ' > [data-index="' + i + '"]' );
+            var stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
             stageDom.setAttribute( "class", "checkpoint-block checkpoint-done" );
         }
         for (var i = index + 1;i < this.stages.length;i++) {
-            var stageDom = document.querySelector(  '#' + checkpointId + ' > [data-index="' + i + '"]' );
+            var stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
             stageDom.setAttribute( "class", "checkpoint-block" );
         }
-        var stageDom = document.querySelector(  '#' + checkpointId + ' > [data-index="' + index + '"]' );
+        var stageDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
         stageDom.setAttribute( "class", "checkpoint-block checkpoint-current" );
 
         /* OnStage Callback */
@@ -280,14 +277,25 @@
     }
 
     /**
-     * Add a Stage to the Stage array.
+     * Add a Stage to the Stage array (after index).
      *
      * @param index the new Stage will be added after this index
      * @param stage
      */
     function _addStage(index, stage) {
-        if (typeof stage == "object") {
-            // TODO set stage
+        if (index < 0 || index > this.stages.length - 1) {
+            console.log( "[CheckpointJS] Wrong index." );
+            return this;
+        }
+        var newStage = new Stage(stage);
+        if (newStage) {
+            this.stages.splice(index + 1, 0, newStage);
+        }
+        if (index < this.currentIndex) {
+            this.currentIndex++;
+            this.init(this.currentIndex);
+        } else {
+            this.init(this.currentIndex);
         }
         return this;
     }
