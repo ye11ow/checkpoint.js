@@ -176,7 +176,7 @@
         }
         for (var i = index + 1;i < this.stages.length;i++) {
             var stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
-            stageDom.setAttribute( "class", "checkpoint-block" );
+            stageDom.setAttribute( "class", "checkpoint-block checkpoint-default" );
         }
         var stageDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
         stageDom.setAttribute( "class", "checkpoint-block checkpoint-current" );
@@ -274,6 +274,13 @@
             }
         }
         return this;
+    }
+    
+    
+    function _setColor(color) {
+        if (typeof color === "object") {
+            
+        }
     }
 
     /**
