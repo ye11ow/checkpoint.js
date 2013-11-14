@@ -1,11 +1,22 @@
-.large-circle {
-    top: 80px;
-    height: 100px;
-    margin-left: 265px;
-    width: 600px;
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.header {
+    background-color: #4793C4;
+    padding-top: 20px;
+    height: 200px;
+    width: 100%;
+}
+
+.checkpoint-page {
+    display: none;
     position: absolute;
-    background-image: url(../img/large-circle.png);
-    display:none;
+}
+
+.checkpoint-page.checkpoint-active {
+    display: block;
 }
 
 /* Tabs */
@@ -21,7 +32,7 @@
 
     /* 2. examples */
     .sample-checkpoint {
-        margin-top: 20px;
         margin-left: 100px;
     }
+
 

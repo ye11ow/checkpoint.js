@@ -3,6 +3,7 @@
  */
 
 $("document").ready(function(){
+    
     var checkpoint = checkpointJs("#checkpoint",
         {
             id: "introduction",
@@ -35,19 +36,67 @@ $("document").ready(function(){
             description: "Thank you!",
             onStageCallback: changeTab
         }
-    ).init();
+    ).init(0);
 
     function changeTab(stage) {
-        $("#" + stage.id + "-tab").tab("show");
         $("#current-stage-description").text(stage.description);
     }
 
     $("body").on("click", "[data-btn='checkpointjs-next']", function(){
+        var $prevPage = $(".checkpoint-active");
+        var $currentPage = $prevPage.next();
+        if ($currentPage.length == 0) {
+            return;
+        }
         checkpoint.next();
+        $("body").css("overflow-y", "hidden");
+        
+        $prevPage.animate({
+            "margin-left": "-200%"
+        }, 400, function() {
+            $prevPage.removeClass("checkpoint-active");
+            $("body").css("overflow-y", "auto");
+        });
+        $currentPage.addClass("checkpoint-active");
+        $currentPage.animate({
+            "margin-left": ""
+        }, 400);
     });
+    
     $("body").on("click", "[data-btn='checkpointjs-prev']", function(){
+        var $prevPage = $(".checkpoint-active");
+        var $currentPage = $prevPage.prev();
+        if ($currentPage.length == 0) {
+            return;
+        }
         checkpoint.prev();
+        $("body").css("overflow-y", "hidden");
+        
+        $prevPage.animate({
+            "margin-left": "200%"
+        }, 400, function() {
+            $prevPage.removeClass("checkpoint-active");
+            $("body").css("overflow-y", "auto");
+        });
+        $currentPage.addClass("checkpoint-active");
+        $currentPage.animate({
+            "margin-left": ""
+        }, 400);
     });
+    
+    var activeIndex = $(".checkpoint-page").length;
+    $(".checkpoint-page").each( function(index) {
+        if ( $(this).hasClass("checkpoint-active") ) {
+            activeIndex = index;
+        }
+        if ( index < activeIndex ) {
+            $(this).css("margin-left", "-200%"); 
+        } else if ( index > activeIndex ) {
+            $(this).css("margin-left", "200%" ); 
+        }
+    });
+    
+
 
     var statusDemo = checkpointJs("#status-demo");
     statusDemo.setStages(
@@ -77,10 +126,8 @@ $("document").ready(function(){
         }, "slow" );
     });
     /**/
-
+    
+    $(".checkpoint-page")
 
 });
-
-
-
 
