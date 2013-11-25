@@ -1,42 +1,65 @@
+/* blue 
+// indicator
+@indicator-default-border-color: #959595;
+@indicator-default-background-color: transparent;
+@indicator-current-border-color: #4793C4;
+@indicator-current-background-color: #4793C4;
+@indicator-done-border-color: #4793C4;
+@indicator-done-background-color: #4793C4;
+
+// connector
+@connector-default-background-color: #959595;
+@connector-current-background-color: #959595;
+@connector-done-background-color: #4793C4;
+
+// title
+@title-default-color: #959595;
+@title-current-color: #4793C4;
+@title-done-color: #4793C4;
+*/
+/* grey */
 .checkpoint-done > .checkpoint-block-connector {
-  background-color: #ffffff;
+  background-color: #fb5c26;
+  box-shadow: 0 0 1px 1px #fb5c26;
 }
 .checkpoint-done > * > .checkpoint-block-indicator {
-  background-color: #ffffff;
-  border: 2px solid #ffffff;
+  box-shadow: 0 0 3px #fb5c26;
+  background-color: #eeeeee;
+  border: 4px solid #fb5c26;
 }
 .checkpoint-done > * > .checkpoint-block-title {
-  color: #ffffff;
+  color: #fbc326;
 }
 .checkpoint-current > .checkpoint-block-connector {
-  background-color: #848484;
+  background-color: #eeeeee;
 }
 .checkpoint-current > * > .checkpoint-block-indicator {
-  height: 24px;
-  width: 24px;
-  background-color: #ffffff;
+  height: 16px;
+  width: 16px;
+  background-color: #eeeeee;
   margin-top: -4px;
-  border: 2px solid #ffffff;
+  border: 6px solid #fb5c26;
+  box-shadow: 0 0 1px 1px #fb5c26;
 }
 .checkpoint-current > * > .checkpoint-block-title {
-  color: #ffffff;
+  color: #fbc326;
   font-size: 14px;
   font-weight: bold;
   top: -8px;
 }
 .checkpoint-current > * > .checkpoint-block-title.checkpoint-alt {
-  color: #ffffff;
+  color: #fbc326;
   top: 40px;
 }
 .checkpoint-default > .checkpoint-block-connector {
-  background-color: #848484;
+  background-color: #eeeeee;
 }
 .checkpoint-default > * > .checkpoint-block-indicator {
   background-color: transparent;
-  border: 2px solid #848484;
+  border: 4px solid #eeeeee;
 }
 .checkpoint-default > * > .checkpoint-block-title {
-  color: #959595;
+  color: #eeeeee;
 }
 .checkpoint-block {
   display: inline-block;
@@ -54,8 +77,8 @@
 .checkpoint-block-indicator {
   margin: auto;
   border-radius: 50%;
-  height: 16px;
-  width: 16px;
+  height: 12px;
+  width: 12px;
   box-sizing: initial;
 }
 .checkpoint-block-title {
@@ -68,9 +91,9 @@
   position: relative;
 }
 .checkpoint-block-connector {
-  margin-top: 21px;
+  margin-top: 22px;
   margin-left: -26px;
-  height: 8px;
+  height: 5px;
   width: 50px;
   float: left;
 }

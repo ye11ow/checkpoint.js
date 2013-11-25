@@ -4,8 +4,9 @@
 
 $("document").ready(function(){
     
-    var checkpoint = checkpointJs("#checkpoint",
-        {
+    var checkpoint = checkpointJs("#checkpoint");
+    
+    checkpoint.setStages([{
             id: "introduction",
             title: "What is?",
             description: "What is Checkpoint.js?",
@@ -35,8 +36,8 @@ $("document").ready(function(){
             title: "Thanks",
             description: "Thank you!",
             onStageCallback: changeTab
-        }
-    ).init(0);
+        }]).init(0);
+    
 
     function changeTab(stage) {
         $("#current-stage-description").text(stage.description);
@@ -98,36 +99,20 @@ $("document").ready(function(){
     
 
 
-    var statusDemo = checkpointJs("#status-demo");
+    var statusDemo = checkpointJs("#status-demo", {namespace: "demopoint"});
     statusDemo.setStages(
         ["Picked Up", "Preparing", "In Transit", "At Local", "Delivering", "Delivered"]
     ).init(2);
 
-    var progressDemo = checkpointJs("#progress-demo");
+    var progressDemo = checkpointJs("#progress-demo", {namespace: "demopoint"});
     progressDemo.setStages(
         ["0%", "25%", "50%", "75%", "100%"]
     ).init(4);
 
-    var timelineDemo = checkpointJs("#timeline-demo");
+    var timelineDemo = checkpointJs("#timeline-demo", {namespace: "demopoint"});
     timelineDemo.setStages(
         ["Jan, 2013", "Feb, 2013", "Mar, 2013", "April, 2013", "May, 2013", "June, 2013"]
     ).init(1);
-
-
-    console.log(checkpoint);
-
-    $("#trick-word").hover( function(){
-        $(".large-circle").animate({
-            opacity: "show"
-        }, 400 );
-    }, function(){
-        $(".large-circle").animate({
-            opacity: "hide"
-        }, "slow" );
-    });
-    /**/
-    
-    $(".checkpoint-page")
 
 });
 
