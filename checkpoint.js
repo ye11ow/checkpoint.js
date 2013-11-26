@@ -1,3 +1,6 @@
+/* jshint unused:true, browser: true, devel: true */
+/* global exports, define */
+
 /**
  * @Author Calvin (Min) Zhang
  * @Email ye111111ow at gmail.com
@@ -95,7 +98,7 @@
                 at = 0;
             }
             for (var index in this.stages) {
-                if ( index == 0 ) {
+                if ( index === 0 ) {
                     this.stages[index].type = "start";
                 } else if ( index == this.stages.length - 1 ) {
                     this.stages[index].type = "end";
@@ -176,17 +179,19 @@
      * @private
      */
     function _markStages(index) {
-        var checkpointId = this.checkpointJs.getAttribute( "id" );
-        var namespace = this._options.namespace;
-        for (var i = 0;i < index;i++) {
-            var stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
+        var namespace = this._options.namespace,
+            stageDom = null,
+            i = 0;
+        
+        for (i = 0;i < index;i++) {
+            stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
             stageDom.setAttribute( "class", namespace + "-block " + namespace + "-done" );
         }
-        for (var i = index + 1;i < this.stages.length;i++) {
-            var stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
+        for (i = index + 1;i < this.stages.length;i++) {
+            stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
             stageDom.setAttribute( "class", namespace + "-block " + namespace + "-default" );
         }
-        var stageDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
+        stageDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
         stageDom.setAttribute( "class", namespace + "-block " + namespace + "-current" );
 
         /* OnStage Callback */
@@ -207,7 +212,7 @@
         var blockTitleDom = document.createElement( "div" );
         var namespace = this._options.namespace;
         blockTitleDom.setAttribute( "data-role", namespace + "-block-title" );
-        if ( index % 2 == 0 ) {
+        if ( index % 2 === 0 ) {
             blockTitleDom.setAttribute( "class", namespace + "-block-title" );
         } else {
             blockTitleDom.setAttribute( "class", namespace + "-block-title " + namespace + "-alt" );
@@ -273,7 +278,7 @@
         if (typeof stage === "object") {
             if (index >= 0 && index <= this.stages.length - 1) {
                 var stage = new Stage(arg);
-                if ( stage != null ) {
+                if ( stage !== null ) {
                     this.stages[index] = stage;
                 } else {
                     console.log( "[CheckpointJS] Wrong stage parameters." );
@@ -335,7 +340,7 @@
      * Destroy all dom elements inside CheckpointJs container.
      */
     function _destroy() {
-        if (this.checkpointJs != null) {
+        if (this.checkpointJs !== null) {
             var container = this.checkpointJs;
             while (container.firstChild) {
                 container.removeChild(container.firstChild);
