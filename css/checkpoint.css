@@ -1,0 +1,99 @@
+/* blue 
+// indicator
+@indicator-default-border-color: #959595;
+@indicator-default-background-color: transparent;
+@indicator-current-border-color: #4793C4;
+@indicator-current-background-color: #4793C4;
+@indicator-done-border-color: #4793C4;
+@indicator-done-background-color: #4793C4;
+
+// connector
+@connector-default-background-color: #959595;
+@connector-current-background-color: #959595;
+@connector-done-background-color: #4793C4;
+
+// title
+@title-default-color: #959595;
+@title-current-color: #4793C4;
+@title-done-color: #4793C4;
+*/
+/* grey */
+.checkpoint-done > .checkpoint-block-connector {
+  background-color: #fb5c26;
+  box-shadow: 0 0 1px 1px #fb5c26;
+}
+.checkpoint-done > * > .checkpoint-block-indicator {
+  box-shadow: 0 0 3px #fb5c26;
+  background-color: #eeeeee;
+  border: 4px solid #fb5c26;
+}
+.checkpoint-done > * > .checkpoint-block-title {
+  color: #fbc326;
+}
+.checkpoint-current > .checkpoint-block-connector {
+  background-color: #eeeeee;
+}
+.checkpoint-current > * > .checkpoint-block-indicator {
+  height: 16px;
+  width: 16px;
+  background-color: #eeeeee;
+  margin-top: -4px;
+  border: 6px solid #fb5c26;
+  box-shadow: 0 0 1px 1px #fb5c26;
+}
+.checkpoint-current > * > .checkpoint-block-title {
+  color: #fbc326;
+  font-size: 14px;
+  font-weight: bold;
+  top: -8px;
+}
+.checkpoint-current > * > .checkpoint-block-title.checkpoint-alt {
+  color: #fbc326;
+  top: 40px;
+}
+.checkpoint-default > .checkpoint-block-connector {
+  background-color: #eeeeee;
+}
+.checkpoint-default > * > .checkpoint-block-indicator {
+  background-color: transparent;
+  border: 4px solid #eeeeee;
+}
+.checkpoint-default > * > .checkpoint-block-title {
+  color: #eeeeee;
+}
+.checkpoint-block {
+  display: inline-block;
+  width: 95px;
+  height: 50px;
+  margin-left: -27px;
+}
+.checkpoint-block-body {
+  position: relative;
+  width: 70px;
+  height: 100%;
+  text-align: center;
+  float: left;
+}
+.checkpoint-block-indicator {
+  margin: auto;
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+  box-sizing: initial;
+}
+.checkpoint-block-title {
+  line-height: 15px;
+  font-size: 10px;
+  position: relative;
+}
+.checkpoint-block-title.checkpoint-alt {
+  top: 35px;
+  position: relative;
+}
+.checkpoint-block-connector {
+  margin-top: 22px;
+  margin-left: -26px;
+  height: 5px;
+  width: 50px;
+  float: left;
+}

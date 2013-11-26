@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkpoint.js Demo</title>
+    <link rel="stylesheet" href="css/checkpoint.css" />
+    <link rel="stylesheet" href="css/demopoint.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/prism.css"  />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body style="background-image: url(img/noisy.png); overflow-x: hidden">
+<div class="header">
+    <div class="large-circle"></div>
+    <div style="text-align: center;"><h1 style="margin-top: 0px;">Checkpoint.js Demo</h1></div>
+    <br/><br/>
+
+    <div id="checkpoint" style="text-align: center; margin-left: 40px;"></div>
+
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <ul class="pager" style="position: relative; top: -65px;">
+                <li class="previous" style="position:fiexd"><a href="#" data-btn="checkpointjs-prev">&larr; Prev</a></li>
+                <li class="next" style="position:fiexd"><a href="#"  id="checkpointjs-next" data-btn="checkpointjs-next">Next &rarr;</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div class="container">
+    <div class="stage-header row">
+        <div class="tab-content col-lg-offset-2 col-lg-8">
+            <h1 id="current-stage-description"></h1>
+            <hr/>
+        </div>
+    </div>
+    <div class="stage-details row">
+        <div class="tab-content col-lg-offset-2 col-lg-8">
+            <div class="checkpoint-page checkpoint-active" id="introduction-page">
+                <p><b>Checkpoint.js</b> is a Javascript library that allows you to create a user interface like the <b id="trick-word">above one</b> in seconds.</p>
+                <br/>
+                <p>Here are some highlights: </p>
+                <ul>
+                    <li><b>Pure</b> Javascript/Css, no other library/framework needed</li>
+                    <li><b>4KB</b> Javascript, <b>2KB</b> CSS</li>
+                    <li><b>Customize</b> your own CSS stylesheets (Using <a href="http://lesscss.org/" target="_blank">LESS</a>)</li>
+                    <li>Open source under <b>MIT</b> license </li>
+                </ul>
+                <br/>
+                <p><b>Checkpoint.js</b> can be used in the following scenarios: </p>
+                <ul>
+                    <li>Status Indicator</li>
+                    <li>Wizard</li>
+                    <li>Progress Bar</li>
+                    <li>Timeline</li>
+                </ul>
+                <br/>
+                <p>Click <b>Next</b> button to see some examples.</p>
+            </div>
+            <div class="checkpoint-page" id="examples-page">
+                <h3>Status Indicator</h3>
+                <div id="status-demo" class="sample-checkpoint"></div>
+                <h3>Wizard</h3>
+                <div id="wizard-demo" class="sample-checkpoint"></div>
+                <h3>Progress Bar</h3>
+                <div id="progress-demo" class="sample-checkpoint"></div>
+                <h3>Timeline</h3>
+                <div id="timeline-demo" class="sample-checkpoint"></div>
+            </div>
+
+            <div class="checkpoint-page" id="usage-page">
+                <h3>init</h3>
+                <code>checkpointJs(querySelector, stage1, stage2...);</code>
+                <pre><code class="language-javascript">var checkpoint = checkpointJs("#checkpoint");</code></pre>
+            </div>
+            <div class="checkpoint-page" id="download-page">
+                <p>Download <a href="https://github.com/ye11ow/checkpoint.js/archive/master.zip" target="_blank">Master</a> branch</p>
+                <p>Visit <a href="https://github.com/ye11ow/checkpoint.js">Github</a> page</p>
+                
+            </div>
+            <div class="checkpoint-page" id="history-page">history</div>
+            <div class="checkpoint-page" id="thanks-page">thanks</div>
+        </div>
+    </div>
+</div>
+<script src="js/checkpoint.js"></script>
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/prism.js"></script>
+
+</body>
+</html>
