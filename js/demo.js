@@ -97,6 +97,14 @@ $("document").ready(function(){
         }
     });
     
+    $("#trick-word").hover(function(){
+        $(".checkpoint-container").fadeTo('slow', 0.1).fadeTo('slow', 1.0);
+    }, function(){
+        $(".header").animate({
+            opacity: "1"
+        }, 800);
+    });
+    
 
 
     var statusDemo = checkpointJs("#status-demo", {namespace: "demopoint"});

@@ -3,11 +3,42 @@
     padding: 0px;
 }
 
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}
+
+.checkpoint-container {
+    z-index: 50;
+}
+
+#trick-word {
+    z-index: 15;
+}
+
 .header {
     background-color: #4793C4;
     padding-top: 20px;
     height: 200px;
     width: 100%;
+}
+
+.checkpoint-container {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 700px;
+    height: 100px;
+    padding-top: 20px;
+    border: 0px solid red;
+    border-radius: 20px;
+    
 }
 
 .checkpoint-page {
