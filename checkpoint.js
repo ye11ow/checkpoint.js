@@ -19,17 +19,24 @@
      *
      * @param target the DOM container of CheckpointJs. Div is preferred.
      */
-    function CheckpointJs(target) {
+    function CheckpointJs(target, options) {
         this.checkpointJs = target;
         this.stages = [];
         this.currentIndex = 0;
-
+        
         /* Set default options */
         this._options = {
+            namespace: "checkpoint",
             direction: "right",
             theme: "default",
             debug: false
         };
+        
+        if (typeof options === "object") {
+            for (var attr in options) {
+                this._options[attr] = options[attr];
+            }
+        }
     }
 
     var DEFAULT_STAGE = {
@@ -94,7 +101,7 @@
                     this.stages[index].type = "end";
                 }
                 var stage = this.stages[index];
-                var stageDom = _createDomFromStage(stage, index);
+                var stageDom = _createDomFromStage.call(this, stage, index);
                 this.checkpointJs.appendChild(stageDom);
             }
             this.currentIndex = at;
@@ -170,16 +177,17 @@
      */
     function _markStages(index) {
         var checkpointId = this.checkpointJs.getAttribute( "id" );
+        var namespace = this._options.namespace;
         for (var i = 0;i < index;i++) {
             var stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
-            stageDom.setAttribute( "class", "checkpoint-block checkpoint-done" );
+            stageDom.setAttribute( "class", namespace + "-block " + namespace + "-done" );
         }
         for (var i = index + 1;i < this.stages.length;i++) {
             var stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
-            stageDom.setAttribute( "class", "checkpoint-block checkpoint-default" );
+            stageDom.setAttribute( "class", namespace + "-block " + namespace + "-default" );
         }
         var stageDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
-        stageDom.setAttribute( "class", "checkpoint-block checkpoint-current" );
+        stageDom.setAttribute( "class", namespace + "-block " + namespace + "-current" );
 
         /* OnStage Callback */
         if (typeof this.stages[index].onStageCallback === "function") {
@@ -197,34 +205,35 @@
      */
     function _createDomFromStage( stage, index ) {
         var blockTitleDom = document.createElement( "div" );
-        blockTitleDom.setAttribute( "data-role", "checkpoint-block-title" );
+        var namespace = this._options.namespace;
+        blockTitleDom.setAttribute( "data-role", namespace + "-block-title" );
         if ( index % 2 == 0 ) {
-            blockTitleDom.setAttribute( "class", "checkpoint-block-title" );
+            blockTitleDom.setAttribute( "class", namespace + "-block-title" );
         } else {
-            blockTitleDom.setAttribute( "class", "checkpoint-block-title checkpoint-alt" );
+            blockTitleDom.setAttribute( "class", namespace + "-block-title " + namespace + "-alt" );
         }
         blockTitleDom.appendChild( document.createTextNode(stage.title) );
 
         var blockIndicatorDom = document.createElement( "div" );
-        blockIndicatorDom.setAttribute( "data-role", "checkpoint-block-indicator" );
-        blockIndicatorDom.setAttribute( "class", "checkpoint-block-indicator" );
+        blockIndicatorDom.setAttribute( "data-role", namespace + "-block-indicator" );
+        blockIndicatorDom.setAttribute( "class", namespace + "-block-indicator" );
 
         var blockBodyDom = document.createElement( "div" );
-        blockBodyDom.setAttribute( "class", "checkpoint-block-body" );
+        blockBodyDom.setAttribute( "class", namespace + "-block-body" );
         blockBodyDom.appendChild(blockTitleDom);
         blockBodyDom.appendChild(blockIndicatorDom);
 
         var blockConnectorDom = document.createElement( "div" );
-        blockConnectorDom.setAttribute( "data-role", "checkpoint-block-connector" );
-        blockConnectorDom.setAttribute( "class", "checkpoint-block-connector" );
+        blockConnectorDom.setAttribute( "data-role", namespace + "-block-connector" );
+        blockConnectorDom.setAttribute( "class", namespace + "-block-connector" );
 
         var stageDom = document.createElement( "div" );
         if (typeof stage.id === "string") {
             stageDom.setAttribute( "id", stage.id );
         }
-        stageDom.setAttribute( "class", "checkpoint-block" );
+        stageDom.setAttribute( "class", namespace + "-block" );
         stageDom.setAttribute( "data-index", index );
-        stageDom.setAttribute( "data-role", "checkpoint-block" );
+        stageDom.setAttribute( "data-role", namespace + "-block" );
         stageDom.appendChild(blockBodyDom);
 
         if ( stage.type != "end" ) {
@@ -336,17 +345,13 @@
     }
 
 
-    var checkpointJs = function (targetSelector) {
+    var checkpointJs = function (targetSelector, options) {
         var target = document.querySelector(targetSelector);
-        if (target == null) {
+        if (target === null) {
             console.log( "[CheckpointJS] Wrong selector." );
             return null;
         } else {
-            var checkpoint = new CheckpointJs(target);
-            if (arguments.length > 1) {
-                var args = Array.prototype.slice.call(arguments);
-                checkpoint.setStages(args.splice(1, args.length - 1));
-            }
+            var checkpoint = new CheckpointJs(target, options);
             return checkpoint;
         }
     };

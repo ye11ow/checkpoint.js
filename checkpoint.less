@@ -1,5 +1,8 @@
 // Less variables
 
+@prefix: checkpoint;
+
+/* blue */
 // indicator
 @indicator-default-border-color: #959595;
 @indicator-default-background-color: transparent;
@@ -19,94 +22,117 @@
 @title-done-color: #4793C4;
 
 
-.checkpoint-done {
-    >.checkpoint-block-connector {
+
+/* grey 
+@indicator-default-border-color: #EEE;
+@indicator-default-background-color: transparent;
+@indicator-current-border-color: #FB5C26;
+@indicator-current-background-color: #EEE;
+@indicator-done-border-color: #FB5C26;
+@indicator-done-background-color: #EEE; 
+
+// connector
+@connector-default-background-color: #EEE;
+@connector-current-background-color: #EEE;
+@connector-done-background-color: #FB5C26;
+
+// title
+@title-default-color: #EEE;
+@title-current-color: #FBC326;
+@title-done-color: #FBC326;
+*/
+
+.@{prefix}-done {
+    >.@{prefix}-block-connector {
         background-color: @connector-done-background-color;
+        box-shadow: 0 0 1px 1px @connector-done-background-color;
     }
     >* {
-        >.checkpoint-block-indicator {
+        >.@{prefix}-block-indicator {
+            box-shadow: 0 0 3px @indicator-done-border-color;
             background-color: @indicator-done-background-color;
-            border: 2px solid @indicator-done-border-color;
+            border: 4px solid @indicator-done-border-color;
         }
-        >.checkpoint-block-title {
+        >.@{prefix}-block-title {
             color: @title-done-color;
         }
     }
 }
 
-.checkpoint-current {
-    >.checkpoint-block-connector {
+.@{prefix}-current {
+    >.@{prefix}-block-connector {
         background-color: @connector-current-background-color;
     }
     >* {
-        >.checkpoint-block-indicator {
-            height: 24px;
-            width: 24px;
+        >.@{prefix}-block-indicator {
+            height: 16px;
+            width: 16px;
             background-color: @indicator-current-background-color;
             margin-top: -4px;
-            border: 2px solid @indicator-current-border-color;
+            border: 6px solid @indicator-current-border-color;
+            box-shadow: 0 0 1px 1px @indicator-current-border-color;
         }
-        >.checkpoint-block-title {
+        >.@{prefix}-block-title {
             color: @title-current-color;
             font-size: 14px;
             font-weight: bold;
             top: -8px;
         }
-        >.checkpoint-block-title.checkpoint-alt {
+        >.@{prefix}-block-title.@{prefix}-alt {
             color: @title-current-color;
             top: 40px;
         }
     }
 }
 
-.checkpoint-default {
-    >.checkpoint-block-connector {
+.@{prefix}-default {
+    >.@{prefix}-block-connector {
         background-color: @connector-default-background-color;
     }
     >* {
-        >.checkpoint-block-indicator {
+        >.@{prefix}-block-indicator {
             background-color: @indicator-default-background-color;
-            border: 2px solid @indicator-default-border-color;
+            border: 4px solid @indicator-default-border-color;
         }
-        >.checkpoint-block-title {
+        >.@{prefix}-block-title {
             color: @title-default-color;
         }
     }
 }
 
-.checkpoint-block {
+.@{prefix}-block {
     display:inline-block;
     width: 95px;
     height: 50px;
     margin-left: -27px;
 }
-.checkpoint-block-body {
+.@{prefix}-block-body {
     position: relative;
     width: 70px;
     height: 100%;
     text-align: center;
     float:left;
 }
-.checkpoint-block-indicator {
+.@{prefix}-block-indicator {
     margin: auto;
     border-radius: 50%;
-    height: 16px;
-    width: 16px;
+    height: 12px;
+    width: 12px;
     box-sizing: initial;
 }
-.checkpoint-block-title {
+.@{prefix}-block-title {
     line-height: 15px;
     font-size: 10px;
     position: relative;
 }
-.checkpoint-block-title.checkpoint-alt {
+.@{prefix}-block-title.@{prefix}-alt {
     top: 35px;
     position: relative;
 }
-.checkpoint-block-connector {
-    margin-top: 21px;
+.@{prefix}-block-connector {
+    margin-top: 22px;
     margin-left: -26px;
-    height: 8px;
+    height: 5px;
     width: 50px;
     float: left;
 }
