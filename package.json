@@ -1,0 +1,21 @@
+{
+  "name": "checkpoint.js",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-less"  : "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch" : "*",
+    "grunt-htmlhint"      : "*",
+    "matchdep"            : "*"
+  },
+  "description": "checkpoint.js\r =============",
+  "main": "checkpoint.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Calvin Zhang",
+  "license": "MIT"
+}
