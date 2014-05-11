@@ -28,8 +28,14 @@ module.exports = function(grunt){
             js: {
                 files: ['checkpoint.js'],
                 tasks: ['uglify']
+            },
+            css: {
+                files: ['checkpoint.less'],
+                tasks: ['less']
             }
         },
+        
+        // Compress javascript into dist folder
         uglify: {
             build: {
                 files: {
@@ -37,19 +43,30 @@ module.exports = function(grunt){
                 }
             }
         },
+        
+        // Compress css into dist folder
         cssmin: {
             build: {
                 src: 'checkpoint.css',
                 dest: 'dist/css/checkpoint.min.css'
             }
         },
+        
+        // Compile css
         less: {
-            files: {
-                "checkpoint.css": "checkpoint.less"
+            development: {
+                files: {
+                    "checkpoint.css": "checkpoint.less",
+                    "css/checkpoint.css": "checkpoint.less"
+                }
             }
         }
     });
 
+    // Register grunt tasks
     grunt.registerTask('default', []);
+    
+    // grunt task: compile and compress css into dist folder
+    grunt.registerTask('buildcss',  ['less', 'cssmin']);
 
 };
