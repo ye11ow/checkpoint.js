@@ -69,4 +69,6 @@ module.exports = function(grunt){
     // grunt task: compile and compress css into dist folder
     grunt.registerTask('buildcss',  ['less', 'cssmin']);
 
+    grunt.registerTask('build',  ['less', 'cssmin', 'uglify']);
+
 };
