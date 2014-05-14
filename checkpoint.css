@@ -13,7 +13,7 @@
 }
 .checkpoint-current > .checkpoint-block-connector {
   background-color: #eeeeee;
-  height: 7px;
+  height: 5px;
 }
 .checkpoint-current > * > .checkpoint-block-indicator {
   height: 16px;
