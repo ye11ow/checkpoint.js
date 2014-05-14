@@ -27,17 +27,27 @@ module.exports = function(grunt){
             },
             js: {
                 files: ['checkpoint.js'],
-                tasks: ['uglify']
+                tasks: ['uglify', 'copy']
             },
             css: {
                 files: ['checkpoint.less'],
-                tasks: ['less']
+                tasks: ['less', 'copy']
+            }
+        },
+
+        // Copy source code and stylesheet to gh-pages
+        copy: {
+            main: {
+                files: [
+                    {expand: true, src: 'checkpoint.js', dest: 'gh-pages/js/'},
+                    {expand: true, src: 'checkpoint.css', dest: 'gh-pages/css/'}
+                ]
             }
         },
         
         // Compress javascript into dist folder
         uglify: {
-            build: {
+            dist: {
                 files: {
                     'dist/js/checkpoint.min.js': ['checkpoint.js']
                 }
@@ -56,8 +66,7 @@ module.exports = function(grunt){
         less: {
             development: {
                 files: {
-                    "checkpoint.css": "checkpoint.less",
-                    "css/checkpoint.css": "checkpoint.less"
+                    "checkpoint.css": "checkpoint.less"
                 }
             }
         }

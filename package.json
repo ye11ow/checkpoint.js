@@ -2,14 +2,15 @@
   "name": "checkpoint.js",
   "version": "0.1.0",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-cssmin": "*",
-    "grunt-contrib-less"  : "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch" : "*",
-    "grunt-htmlhint"      : "*",
-    "matchdep"            : "*"
+    "grunt"                 : "~0.4.2",
+    "grunt-contrib-cssmin"  : "*",
+    "grunt-contrib-less"    : "*",
+    "grunt-contrib-jshint"  : "*",
+    "grunt-contrib-uglify"  : "*",
+    "grunt-contrib-watch"   : "*",
+    "grunt-contrib-copy"    : "*",
+    "grunt-htmlhint"        : "*",
+    "matchdep"              : "*"
   },
   "description": "checkpoint.js\r =============",
   "main": "checkpoint.js",
