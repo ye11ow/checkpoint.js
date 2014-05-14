@@ -1,27 +1,9 @@
-/* blue */
-/* grey 
-@indicator-default-border-color: #EEE;
-@indicator-default-background-color: transparent;
-@indicator-current-border-color: #FB5C26;
-@indicator-current-background-color: #EEE;
-@indicator-done-border-color: #FB5C26;
-@indicator-done-background-color: #EEE; 
-
-// connector
-@connector-default-background-color: #EEE;
-@connector-current-background-color: #EEE;
-@connector-done-background-color: #FB5C26;
-
-// title
-@title-default-color: #EEE;
-@title-current-color: #FBC326;
-@title-done-color: #FBC326;
-*/
 .demopoint-done > .demopoint-block-connector {
   background-color: #4793c4;
   box-shadow: 0 0 1px 1px #4793c4;
 }
 .demopoint-done > * > .demopoint-block-indicator {
+  margin-top: 10px;
   box-shadow: 0 0 3px #4793c4;
   background-color: #4793c4;
   border: 4px solid #4793c4;
@@ -31,29 +13,29 @@
 }
 .demopoint-current > .demopoint-block-connector {
   background-color: #959595;
+  height: 7px;
 }
 .demopoint-current > * > .demopoint-block-indicator {
   height: 16px;
   width: 16px;
+  margin: 4px 0;
   background-color: #4793c4;
-  margin-top: -4px;
-  border: 6px solid #4793c4;
+  border: 8px solid #4793c4;
   box-shadow: 0 0 1px 1px #4793c4;
 }
 .demopoint-current > * > .demopoint-block-title {
   color: #4793c4;
   font-size: 14px;
   font-weight: bold;
-  top: -8px;
 }
 .demopoint-current > * > .demopoint-block-title.demopoint-alt {
   color: #4793c4;
-  top: 40px;
 }
 .demopoint-default > .demopoint-block-connector {
   background-color: #959595;
 }
 .demopoint-default > * > .demopoint-block-indicator {
+  margin-top: 10px;
   background-color: transparent;
   border: 4px solid #959595;
 }
@@ -61,17 +43,15 @@
   color: #959595;
 }
 .demopoint-block {
-  display: inline-block;
-  width: 95px;
-  height: 50px;
-  margin-left: -27px;
+  height: 80px;
+  float: left;
 }
 .demopoint-block-body {
-  position: relative;
-  width: 70px;
   height: 100%;
+  width: 100%;
   text-align: center;
   float: left;
+  position: relative;
 }
 .demopoint-block-indicator {
   margin: auto;
@@ -79,20 +59,20 @@
   height: 12px;
   width: 12px;
   box-sizing: initial;
+  display: inline-block;
 }
 .demopoint-block-title {
-  line-height: 15px;
+  line-height: 20px;
   font-size: 10px;
   position: relative;
 }
 .demopoint-block-title.demopoint-alt {
-  top: 35px;
+  top: 60px;
+  line-height: 20px;
   position: relative;
 }
 .demopoint-block-connector {
-  margin-top: 22px;
-  margin-left: -26px;
   height: 5px;
   width: 50px;
-  float: left;
+  margin-top: 37px;
 }

@@ -42,6 +42,7 @@
 }
 
 .checkpoint-page {
+    width: 100%;
     display: none;
     position: absolute;
 }
@@ -63,7 +64,7 @@
 
     /* 2. examples */
     .sample-checkpoint {
-        margin-left: 100px;
+        height: 80px;
     }
 
 

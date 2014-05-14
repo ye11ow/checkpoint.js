@@ -44,12 +44,16 @@ $("document").ready(function(){
     }
 
     $("body").on("click", "[data-btn='checkpointjs-next']", function(){
-        var $prevPage = $(".checkpoint-active");
-        var $currentPage = $prevPage.next();
+        var self = this,
+            $prevPage = $(".checkpoint-active"),
+            $currentPage = $prevPage.next();
+
         if ($currentPage.length == 0) {
             return;
         }
+        self.disabled = true;
         checkpoint.next();
+
         $("body").css("overflow-y", "hidden");
         
         $prevPage.animate({
@@ -61,16 +65,27 @@ $("document").ready(function(){
         $currentPage.addClass("checkpoint-active");
         $currentPage.animate({
             "margin-left": ""
-        }, 400);
+        }, 400, function(){
+            self.disabled = false;
+            if ( checkpoint.currentIndex === 1 ) {
+                statusDemo.init(2);
+                progressDemo.init(4);
+                timelineDemo.init(1);
+            }
+        });
     });
     
     $("body").on("click", "[data-btn='checkpointjs-prev']", function(){
-        var $prevPage = $(".checkpoint-active");
-        var $currentPage = $prevPage.prev();
+        var self = this,
+            $prevPage = $(".checkpoint-active"),
+            $currentPage = $prevPage.prev();
+
         if ($currentPage.length == 0) {
             return;
         }
+        self.disabled = true;
         checkpoint.prev();
+
         $("body").css("overflow-y", "hidden");
         
         $prevPage.animate({
@@ -82,7 +97,9 @@ $("document").ready(function(){
         $currentPage.addClass("checkpoint-active");
         $currentPage.animate({
             "margin-left": ""
-        }, 400);
+        }, 400, function(){
+            self.disabled = false;
+        });
     });
     
     var activeIndex = $(".checkpoint-page").length;
@@ -110,17 +127,17 @@ $("document").ready(function(){
     var statusDemo = checkpointJs("#status-demo", {namespace: "demopoint"});
     statusDemo.setStages(
         ["Picked Up", "Preparing", "In Transit", "At Local", "Delivering", "Delivered"]
-    ).init(2);
+    );
 
     var progressDemo = checkpointJs("#progress-demo", {namespace: "demopoint"});
     progressDemo.setStages(
         ["0%", "25%", "50%", "75%", "100%"]
-    ).init(4);
+    );
 
     var timelineDemo = checkpointJs("#timeline-demo", {namespace: "demopoint"});
     timelineDemo.setStages(
         ["Jan, 2013", "Feb, 2013", "Mar, 2013", "April, 2013", "May, 2013", "June, 2013"]
-    ).init(1);
+    );
 
 });
 

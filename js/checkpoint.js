@@ -23,6 +23,8 @@
      * @param target the DOM container of CheckpointJs. Div is preferred.
      */
     function CheckpointJs(target, options) {
+        var self = this;
+        
         this.checkpointJs = target;
         this.stages = [];
         this.currentIndex = 0;
@@ -40,6 +42,10 @@
                 this._options[attr] = options[attr];
             }
         }
+        
+        window.addEventListener('resize', function(){
+            _resize.call(self);
+        });
     }
 
     var DEFAULT_STAGE = {
@@ -97,17 +103,19 @@
             if (typeof at != "number") {
                 at = 0;
             }
-            for (var index in this.stages) {
-                if ( index === 0 ) {
-                    this.stages[index].type = "start";
-                } else if ( index == this.stages.length - 1 ) {
-                    this.stages[index].type = "end";
+            
+            for ( var i = 0; i< this.stages.length; i++ ) {
+                if ( i === 0 ) {
+                    this.stages[i].type = "start";
+                } else if ( i === this.stages.length - 1 ) {
+                    this.stages[i].type = "end";
                 }
-                var stage = this.stages[index];
-                var stageDom = _createDomFromStage.call(this, stage, index);
+                var stage = this.stages[i];
+                var stageDom = _createDomFromStage.call(this, stage, i, at);
                 this.checkpointJs.appendChild(stageDom);
             }
             this.currentIndex = at;
+            _resize.call(this);
             _markStages.call(this, this.currentIndex);
             return this;
         }
@@ -208,16 +216,17 @@
      *
      * @private
      */
-    function _createDomFromStage( stage, index ) {
-        var blockTitleDom = document.createElement( "div" );
-        var namespace = this._options.namespace;
+    function _createDomFromStage( stage, index, at ) {
+        var blockTitleDom = document.createElement( "div" ),
+            namespace = this._options.namespace;
+                
         blockTitleDom.setAttribute( "data-role", namespace + "-block-title" );
         if ( index % 2 === 0 ) {
             blockTitleDom.setAttribute( "class", namespace + "-block-title" );
         } else {
             blockTitleDom.setAttribute( "class", namespace + "-block-title " + namespace + "-alt" );
         }
-        blockTitleDom.appendChild( document.createTextNode(stage.title) );
+        blockTitleDom.appendChild( document.createTextNode( stage.title ) );
 
         var blockIndicatorDom = document.createElement( "div" );
         blockIndicatorDom.setAttribute( "data-role", namespace + "-block-indicator" );
@@ -225,12 +234,12 @@
 
         var blockBodyDom = document.createElement( "div" );
         blockBodyDom.setAttribute( "class", namespace + "-block-body" );
-        blockBodyDom.appendChild(blockTitleDom);
-        blockBodyDom.appendChild(blockIndicatorDom);
+        blockBodyDom.appendChild( blockTitleDom );
+        blockBodyDom.appendChild( blockIndicatorDom );
 
         var blockConnectorDom = document.createElement( "div" );
         blockConnectorDom.setAttribute( "data-role", namespace + "-block-connector" );
-        blockConnectorDom.setAttribute( "class", namespace + "-block-connector" );
+        blockConnectorDom.setAttribute( "class", namespace + "-block-connector" );        
 
         var stageDom = document.createElement( "div" );
         if (typeof stage.id === "string") {
@@ -239,12 +248,32 @@
         stageDom.setAttribute( "class", namespace + "-block" );
         stageDom.setAttribute( "data-index", index );
         stageDom.setAttribute( "data-role", namespace + "-block" );
+        stageDom.style.width = 100 / this.stages.length + "%";
+        
         stageDom.appendChild(blockBodyDom);
 
         if ( stage.type != "end" ) {
             stageDom.appendChild(blockConnectorDom);
         }
+        
         return stageDom;
+    }
+    
+    function _resize() {
+        var namespace = this._options.namespace,
+            blocks = this.checkpointJs.querySelectorAll('[data-role="' + namespace + '-block"]'),
+            containerWidth = this.checkpointJs.offsetWidth,
+            stageCount = this.stages.length,
+            blockWidth = containerWidth / stageCount;
+                
+        for ( var i = 0; i < blocks.length - 1; i++ ) {
+            var connector = blocks[i].querySelector('[data-role="' + namespace + '-block-connector"]');
+                        
+            connector.style["margin-left"] = blockWidth / 2 + 8 + "px";
+            connector.style.width = blockWidth - 16 + "px";
+        }
+        
+
     }
 
     /**
