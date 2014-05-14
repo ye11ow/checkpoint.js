@@ -66,12 +66,24 @@
             </div>
 
             <div class="checkpoint-page" id="usage-page">
-                <h3>Init</h3>
-                <code>checkpointJs(selector, [options]);</code>
+                <h3>1. Init</h3>
+                <code>checkpointJs(selector, [options]);</code><br/><br/>
+                <p>
+                    Assign a DOM selector (container) to checkpoint.js. Notice that currently, the container has to be <b>80px</b> in height.
+                </p>
                 <pre><code class="language-javascript">var checkpoint = checkpointJs("#checkpoint");</code></pre>
                 
-                <h3>Set data</h3>
-                <code>setStage([stage, stage, stage...]);</code>
+                <h3>2. Set data</h3>
+                <code>setStage([stage, stage, stage...]);</code><br/><br/>
+                <p>
+                    For each <code>stage</code>, there are four attributes:
+                    <ul>
+                        <li><code>id</code> [string]: the id will be set to DOM</li>
+                        <li><code>title</code> [string]: the title display on this stage</li>
+                        <li><code>description</code> [string]:</li>
+                        <li><code>onStageCallback</code> [function]: the function that will be called after entering this stage</li>
+                    </ul>
+                </p>
                 <pre><code class="language-javascript">checkpoint.setStages([{
                     id: "introduction",
                     title: "What is?",
@@ -88,8 +100,11 @@
                     description: "Usage",
                     onStageCallback: changeTab
                 }]);</code></pre>
-                <h3>Draw</h3>
-                <code>init(defaultStage);</code>
+                <h3>3. Draw</h3>
+                <code>init(defaultStage);</code><br/><br/>
+                <p>
+                    Draw checkpoint.js on the UI. Notice that currently, the container has to be <b>visible</b> while drawing checkpoint.js, otherwise checkpoint.js cannot detect the width of container.
+                </p>
                 <pre><code class="language-javascript">checkpoint.init(0);</code></pre>
             </div>
             <div class="checkpoint-page" id="download-page">
