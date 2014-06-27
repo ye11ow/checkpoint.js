@@ -16,6 +16,14 @@
     }
 }(this, function (exports) {
 
+    var DEFAULT_STAGE = {
+        id: "",
+        title: "",
+        type: "node",
+        description: "",
+        onStageCallback: null
+    };
+
 
     /**
      * Constructor of CheckpointJs.
@@ -28,6 +36,7 @@
         this.checkpointJs = target;
         this.stages = [];
         this.currentIndex = 0;
+        this.inited = false;
         
         /* Set default options */
         this._options = {
@@ -37,24 +46,18 @@
             debug: false
         };
         
+        /* Override default options */
         if (typeof options === "object") {
             for (var attr in options) {
                 this._options[attr] = options[attr];
             }
         }
         
+        // Issue #1
         window.addEventListener('resize', function(){
             _resize.call(self);
         });
     }
-
-    var DEFAULT_STAGE = {
-        id: "",
-        title: "",
-        type: "node",
-        description: "",
-        onStageCallback: null
-    };
 
     /**
      * Constructor of Stage.
@@ -100,6 +103,7 @@
     function _init(at) {
         this.destroy();
         if (typeof this.checkpointJs == "object") {
+            this.inited = true;
             if (typeof at != "number") {
                 at = 0;
             }
@@ -259,6 +263,10 @@
         return stageDom;
     }
     
+
+    /**
+     * Resize checkpoint dynamically based on its width
+     */
     function _resize() {
         var namespace = this._options.namespace,
             blocks = this.checkpointJs.querySelectorAll('[data-role="' + namespace + '-block"]'),
@@ -319,34 +327,46 @@
         return this;
     }
     
-    
-    function _setColor(color) {
-        if (typeof color === "object") {
-            
-        }
-    }
 
     /**
      * Add a Stage to the Stage array (after index).
      *
-     * @param index the new Stage will be added after this index
+     * @param index the new Stage will be added before this index
      * @param stage
      */
-    function _addStage(index, stage) {
+    function _insertStage(index, stage) {
         if (index < 0 || index > this.stages.length - 1) {
             console.log( "[CheckpointJS] Wrong index." );
             return this;
         }
         var newStage = new Stage(stage);
         if (newStage) {
-            this.stages.splice(index + 1, 0, newStage);
-        }
-        if (index < this.currentIndex) {
-            this.currentIndex++;
-            this.init(this.currentIndex);
+            this.stages.splice(index, 0, newStage);
         } else {
-            this.init(this.currentIndex);
+            return this;
         }
+        if (index <= this.currentIndex) {
+            this.currentIndex++;
+        }
+        if (this.inited) {
+            _init.call(this, this.currentIndex);
+        }
+        
+
+        return this;
+    }
+
+    /**
+     * Append a Stage to the end of Stages.
+     *
+     * @param stage
+     */
+    function _appendStage(stage) {
+        var newStage = new Stage(stage);
+        if (newStage) {
+            this.stages.splice(this.stages.length, 0, newStage);
+        }
+
         return this;
     }
 
@@ -375,6 +395,7 @@
                 container.removeChild(container.firstChild);
             }
         }
+        this.inited = false;
         return this;
     }
 
@@ -399,7 +420,8 @@
         },
         setStages: _setStages,
         setStage: _setStage,
-        addStage: _addStage,
+        addStage: _insertStage,
+        appendStage: _appendStage,
         atStage: _atStage,
         removeStage: _removeStage,
         next: _next,
