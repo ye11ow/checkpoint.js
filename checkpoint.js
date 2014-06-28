@@ -335,7 +335,7 @@
      * @param stage
      */
     function _insertStage(index, stage) {
-        if (index < 0 || index > this.stages.length - 1) {
+        if (index < 0 || index > this.stages.length) {
             console.log( "[CheckpointJS] Wrong index." );
             return this;
         }
@@ -352,7 +352,6 @@
             _init.call(this, this.currentIndex);
         }
         
-
         return this;
     }
 
@@ -420,7 +419,7 @@
         },
         setStages: _setStages,
         setStage: _setStage,
-        addStage: _insertStage,
+        insertStage: _insertStage,
         appendStage: _appendStage,
         atStage: _atStage,
         removeStage: _removeStage,
