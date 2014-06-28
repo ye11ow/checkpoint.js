@@ -306,24 +306,27 @@
     }
 
     /**
-     * Replace a current Stage with the new one.
+     * Set/Get a stage
      *
      * @param index the index of the Stage
-     * @param arg the argument that used for constructing the Stage.
+     * @param stage the argument that used for constructing the Stage.
      */
-    function _setStage(index, arg) {
-        if (typeof stage === "object") {
-            if (index >= 0 && index <= this.stages.length - 1) {
-                var stage = new Stage(arg);
+    function _stage(index, stage) {
+        if (index >= 0 && index <= this.stages.length - 1) {
+            if (arguments.length === 1) {
+                return this.stages[index];
+            } else if (arguments.length === 2) {
+                var stage = new Stage(stage);
                 if ( stage !== null ) {
                     this.stages[index] = stage;
                 } else {
                     console.log( "[CheckpointJS] Wrong stage parameters." );
                 }
-            } else {
-                console.log( "[CheckpointJS] No such stage." );
-            }
+            } 
+        } else {
+            console.log( "[CheckpointJS] Wrong index" );
         }
+        
         return this;
     }
     
@@ -339,17 +342,16 @@
             console.log( "[CheckpointJS] Wrong index." );
             return this;
         }
+
         var newStage = new Stage(stage);
         if (newStage) {
             this.stages.splice(index, 0, newStage);
-        } else {
-            return this;
-        }
-        if (index <= this.currentIndex) {
-            this.currentIndex++;
-        }
-        if (this.inited) {
-            _init.call(this, this.currentIndex);
+            if (index <= this.currentIndex) {
+                this.currentIndex++;
+            }
+            if (this.inited) {
+                _init.call(this, this.currentIndex);
+            }
         }
         
         return this;
@@ -375,9 +377,15 @@
      */
     function _removeStage(index) {
         if (index >= 0 && index <= this.stages.length - 1) {
-            this.stages.splice(index, 1);
-            this.destroy();
-            this.init();
+            if (index === this.currentIndex && index === this.stages.length - 1) {
+                this.currentIndex--;
+            }
+            var stage = this.stages.splice(index, 1);
+            stage.onStageCallback = null;
+
+            if (this.inited) {
+                _init.call(this, this.currentIndex);
+            }
         } else {
             console.log( "[CheckpointJS] No such stage." );
         }
@@ -417,16 +425,20 @@
         clone: function () {
             return new CheckpointJs(this);
         },
+        
+        init: _init,
+
+        stage: _stage,
         setStages: _setStages,
-        setStage: _setStage,
         insertStage: _insertStage,
         appendStage: _appendStage,
-        atStage: _atStage,
         removeStage: _removeStage,
+
         next: _next,
         prev: _prev,
+        atStage: _atStage,
         complete: _complete,
-        init: _init,
+        
         reset: _reset,
         destroy: _destroy
     };
