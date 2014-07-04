@@ -12,11 +12,11 @@ describe('Checkpoint', function(){
         }
     });
 
-    describe('#setStages', function(){
-        it('should set stages', function(){
-            var length = checkpoint.stages.length;
+    describe('#setPoints', function(){
+        it('should set points', function(){
+            var length = checkpoint.points.length;
 
-            checkpoint.setStages([{
+            checkpoint.setPoints([{
                 id: "first",
                 title: "first"
             },{
@@ -27,71 +27,96 @@ describe('Checkpoint', function(){
                 title: "third"
             }]);
 
-            expect(checkpoint).to.have.property('stages').with.length(length + 3);
-            expect(checkpoint).to.have.deep.property('stages[0].title', 'first');
-            expect(checkpoint).to.have.deep.property('stages[1].title', 'second');
-            expect(checkpoint).to.have.deep.property('stages[2].title', 'third');
+            expect(checkpoint).to.have.property('points').with.length(length + 3);
+            expect(checkpoint).to.have.deep.property('points[0].title', 'first');
+            expect(checkpoint).to.have.deep.property('points[1].title', 'second');
+            expect(checkpoint).to.have.deep.property('points[2].title', 'third');
         });
     });
 
-    describe('#insertStage', function(){
-        it('should insert a stage to the stages', function(){
-            var length = checkpoint.stages.length;
+    describe('#insertPoint', function(){
+        it('should insert a point to the points', function(){
+            var length = checkpoint.points.length;
 
-            checkpoint.insertStage(0, {
+            checkpoint.insertPoint(0, {
                 id: "inserted",
                 title: "inserted"
             });
 
-            expect(checkpoint).to.have.property('stages').with.length(length + 1);
-            expect(checkpoint).to.have.deep.property('stages[0].title', 'inserted');
+            expect(checkpoint).to.have.property('points').with.length(length + 1);
+            expect(checkpoint).to.have.deep.property('points[0].title', 'inserted');
         });
     });
 
-    describe('#stage', function(){
-        it('should set a stage', function(){
-            var length = checkpoint.stages.length;
+    describe('#point', function(){
+        it('should set a point', function(){
+            var length = checkpoint.points.length;
 
-            checkpoint.stage(0, {
+            checkpoint.point(0, {
                 id: "anotherFirst",
                 title: "anotherFirst"
             });
 
-            expect(checkpoint).to.have.property('stages').with.length(length);
-            expect(checkpoint).to.have.deep.property('stages[0].title', 'anotherFirst');
+            expect(checkpoint).to.have.property('points').with.length(length);
+            expect(checkpoint).to.have.deep.property('points[0].title', 'anotherFirst');
+        });
+        it('should get a point', function(){
+            var point = checkpoint.point(0);
+
+            expect(point).to.have.property('title', 'anotherFirst');
         });
     });
 
-    describe('#stage', function(){
-        it('should get a stage', function(){
-            var stage = checkpoint.stage(0);
+    describe('#appendPoint', function(){
+        it('should append a point to the end of points', function(){
+            var length = checkpoint.points.length;
 
-            expect(stage).to.have.property('title', 'anotherFirst');
-        });
-    });
-
-
-    describe('#appendStage', function(){
-        it('should append a stage to the end of stages', function(){
-            var length = checkpoint.stages.length;
-
-            checkpoint.appendStage({
+            checkpoint.appendPoint({
                 id: "last",
                 title: "last"
             });
 
-            expect(checkpoint).to.have.property('stages').with.length(length + 1);
-            expect(checkpoint).to.have.deep.property('stages[' + length + '].title', 'last');
+            expect(checkpoint).to.have.property('points').with.length(length + 1);
+            expect(checkpoint).to.have.deep.property('points[' + length + '].title', 'last');
         });
     });
 
-    describe('#removeStage', function(){
-        it('should remove a specific stage', function(){
-            var length = checkpoint.stages.length;
+    describe('#removePoint', function(){
+        it('should remove a specific point', function(){
+            var length = checkpoint.points.length;
 
-            checkpoint.removeStage(length - 1);
+            checkpoint.removePoint(length - 1);
 
-            expect(checkpoint).to.have.property('stages').with.length(length - 1);
+            expect(checkpoint).to.have.property('points').with.length(length - 1);
+        });
+    });
+
+    describe('#reach', function(){
+        it('should reach a specific point within range', function(){
+            var to = Math.floor(Math.random() * checkpoint.points.length);
+
+            checkpoint.reach(to);
+
+            expect(checkpoint).to.have.property('currentIndex', to);
+        });
+
+        it('should not change the currentIndex when try to reach a invalid point', function(){
+            var currentIndex = checkpoint.currentIndex;
+
+            checkpoint.reach(-1);
+            expect(checkpoint).to.have.property('currentIndex', currentIndex);
+
+            checkpoint.reach(checkpoint.points.length);
+            expect(checkpoint).to.have.property('currentIndex', currentIndex);
+        });
+    });
+
+    describe('#complete', function(){
+        it('should reach the end point', function(){
+            checkpoint.reach(0);
+            checkpoint.complete();
+
+            expect(checkpoint).to.have.property('currentIndex', checkpoint.points.length - 1);
         });
     });
 

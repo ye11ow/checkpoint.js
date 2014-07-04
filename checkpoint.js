@@ -21,7 +21,7 @@
         title: "",
         type: "node",
         description: "",
-        onStageCallback: null
+        onPointCallback: null
     };
 
 
@@ -34,7 +34,7 @@
         var self = this;
         
         this.checkpointJs = target;
-        this.stages = [];
+        this.points = [];
         this.currentIndex = 0;
         this.inited = false;
         
@@ -60,29 +60,29 @@
     }
 
     /**
-     * Constructor of Stage.
-     * Stage is the basic component of CheckpointJs. Each Stage refers a checkpoint of CheckpointJs.
-     * There are three (four) type of Stage:
+     * Constructor of Point.
+     * Point is the basic component of CheckpointJs. Each Point refers a checkpoint of CheckpointJs.
+     * There are three (four) type of Point:
      *   1. start
      *   2. end
      *   3. node
      *   (4. millstone)
      *
-     * @param arg the argument that used for constructing a Stage.
+     * @param arg the argument that used for constructing a Point.
      */
-    function Stage(arg) {
+    function Point(arg) {
         /* Set default */
         for (var attr in DEFAULT_STAGE) {
             this[attr] = arg[attr];
         }
 
-        /* 1. Use an Object to construct Stage */
+        /* 1. Use an Object to construct Point */
         if (typeof arg === "object"){
             for (var attr in arg) {
                 this[attr] = arg[attr];
             }
         }
-        /* 2. Use a String to construct Stage */
+        /* 2. Use a String to construct Point */
         else if (typeof arg === "string") {
             this.title = arg;
         }
@@ -108,69 +108,69 @@
                 at = 0;
             }
             
-            for ( var i = 0; i< this.stages.length; i++ ) {
+            for ( var i = 0; i< this.points.length; i++ ) {
                 if ( i === 0 ) {
-                    this.stages[i].type = "start";
-                } else if ( i === this.stages.length - 1 ) {
-                    this.stages[i].type = "end";
+                    this.points[i].type = "start";
+                } else if ( i === this.points.length - 1 ) {
+                    this.points[i].type = "end";
                 }
-                var stage = this.stages[i];
-                var stageDom = _createDomFromStage.call(this, stage, i, at);
-                this.checkpointJs.appendChild(stageDom);
+                var point = this.points[i];
+                var pointDom = _createDomFromPoint.call(this, point, i, at);
+                this.checkpointJs.appendChild(pointDom);
             }
             this.currentIndex = at;
             _resize.call(this);
-            _markStages.call(this, this.currentIndex);
+            _markPoints.call(this, this.currentIndex);
             return this;
         }
     }
 
     /**
-     * Move to the next Stage.
+     * Move to the next Point.
      */
     function _next() {
-        if ( this.currentIndex < this.stages.length - 1 ) {
+        if ( this.currentIndex < this.points.length - 1 ) {
             this.currentIndex++;
-            _markStages.call(this, this.currentIndex);
+            _markPoints.call(this, this.currentIndex);
         } else {
-            console.log( "[CheckpointJS] No next stage." );
+            console.log( "[CheckpointJS] No next point." );
         }
         return this;
     }
 
     /**
-     * Move back to the previous Stage.
+     * Move back to the previous Point.
      */
     function _prev() {
         if ( this.currentIndex > 0 ) {
             this.currentIndex--;
-            _markStages.call(this, this.currentIndex);
+            _markPoints.call(this, this.currentIndex);
         } else {
-            console.log( "[CheckpointJS] No previous stage." );
+            console.log( "[CheckpointJS] No previous point." );
         }
         return this;
     }
 
     /**
-     * Move to the latest Stage. Mark all the Stage as done.
+     * Move to the latest Point. Mark all the Point as done.
      */
     function _complete() {
-        this.currentIndex = this.stages.length - 1;
-        _markStages.call(this, this.currentIndex);
+        this.currentIndex = this.points.length - 1;
+        _markPoints.call(this, this.currentIndex);
         return this;
     }
 
     /**
-     * Move to a specific Stage
+     * Move to a specific Point
      *
-     * @param index the index of Stage, started from 0.
+     * @param index the index of Point, started from 0.
      */
-    function _atStage(index) {
-        if (index >= 0 && index <= this.stages.length - 1) {
+    function _reach(index) {
+        if (index >= 0 && index <= this.points.length - 1) {
             this.currentIndex = index;
-            _markStages.call(this, this.currentIndex);
+            _markPoints.call(this, this.currentIndex);
         } else {
-            console.log( "[CheckpointJS] No such stage." );
+            console.log( "[CheckpointJS] No such point." );
         }
         return this;
     }
@@ -180,47 +180,49 @@
      */
     function _reset() {
         this.currentIndex = 0;
-        _markStages.call(this, this.currentIndex);
+        _markPoints.call(this, this.currentIndex);
         return this;
     }
 
     /**
-     * Mark all Stages before the index one as done. Mark all Stages after the index one as todo.
-     * The callee must make sure the  index is correct.
+     * Mark all Points before the index one as done. Mark all Points after the index one as todo.
+     * The callee must make sure the index is correct.
      *
      * @private
      */
-    function _markStages(index) {
+    function _markPoints(index) {
         var namespace = this._options.namespace,
-            stageDom = null,
+            pointDom = null,
             i = 0;
-        
-        for (i = 0;i < index;i++) {
-            stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
-            stageDom.setAttribute( "class", namespace + "-block " + namespace + "-done" );
-        }
-        for (i = index + 1;i < this.stages.length;i++) {
-            stageDom = this.checkpointJs.querySelector(  '[data-index="' + i + '"]' );
-            stageDom.setAttribute( "class", namespace + "-block " + namespace + "-default" );
-        }
-        stageDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
-        stageDom.setAttribute( "class", namespace + "-block " + namespace + "-current" );
 
-        /* OnStage Callback */
-        if (typeof this.stages[index].onStageCallback === "function") {
-            this.stages[index].onStageCallback(this.stages[index]);
+        if (this.inited) {
+            for (i = 0;i < index;i++) {
+                pointDom = this.checkpointJs.querySelector( '[data-index="' + i + '"]' );
+                pointDom.setAttribute( "class", namespace + "-block " + namespace + "-done" );
+            }
+            for (i = index + 1;i < this.points.length;i++) {
+                pointDom = this.checkpointJs.querySelector( '[data-index="' + i + '"]' );
+                pointDom.setAttribute( "class", namespace + "-block " + namespace + "-default" );
+            }
+            pointDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
+            pointDom.setAttribute( "class", namespace + "-block " + namespace + "-current" );
+        }
+        
+        /* OnPoint Callback */
+        if (typeof this.points[index].onPointCallback === "function") {
+            this.points[index].onPointCallback(this.points[index]);
         }
     }
 
     /**
-     * Create the DOM for a specific Stage
+     * Create the DOM for a specific Point
      *
-     * @param stage
-     * @param index the index of this Stage among all Stages
+     * @param point
+     * @param index the index of this Point among all Points
      *
      * @private
      */
-    function _createDomFromStage( stage, index, at ) {
+    function _createDomFromPoint( point, index, at ) {
         var blockTitleDom = document.createElement( "div" ),
             namespace = this._options.namespace;
                 
@@ -230,7 +232,7 @@
         } else {
             blockTitleDom.setAttribute( "class", namespace + "-block-title " + namespace + "-alt" );
         }
-        blockTitleDom.appendChild( document.createTextNode( stage.title ) );
+        blockTitleDom.appendChild( document.createTextNode( point.title ) );
 
         var blockIndicatorDom = document.createElement( "div" );
         blockIndicatorDom.setAttribute( "data-role", namespace + "-block-indicator" );
@@ -245,22 +247,22 @@
         blockConnectorDom.setAttribute( "data-role", namespace + "-block-connector" );
         blockConnectorDom.setAttribute( "class", namespace + "-block-connector" );        
 
-        var stageDom = document.createElement( "div" );
-        if (typeof stage.id === "string") {
-            stageDom.setAttribute( "id", stage.id );
+        var pointDom = document.createElement( "div" );
+        if (typeof point.id === "string") {
+            pointDom.setAttribute( "id", point.id );
         }
-        stageDom.setAttribute( "class", namespace + "-block" );
-        stageDom.setAttribute( "data-index", index );
-        stageDom.setAttribute( "data-role", namespace + "-block" );
-        stageDom.style.width = 100 / this.stages.length + "%";
+        pointDom.setAttribute( "class", namespace + "-block" );
+        pointDom.setAttribute( "data-index", index );
+        pointDom.setAttribute( "data-role", namespace + "-block" );
+        pointDom.style.width = 100 / this.points.length + "%";
         
-        stageDom.appendChild(blockBodyDom);
+        pointDom.appendChild(blockBodyDom);
 
-        if ( stage.type != "end" ) {
-            stageDom.appendChild(blockConnectorDom);
+        if ( point.type != "end" ) {
+            pointDom.appendChild(blockConnectorDom);
         }
         
-        return stageDom;
+        return pointDom;
     }
     
 
@@ -271,8 +273,8 @@
         var namespace = this._options.namespace,
             blocks = this.checkpointJs.querySelectorAll('[data-role="' + namespace + '-block"]'),
             containerWidth = this.checkpointJs.offsetWidth,
-            stageCount = this.stages.length,
-            blockWidth = containerWidth / stageCount;
+            pointCount = this.points.length,
+            blockWidth = containerWidth / pointCount;
                 
         for ( var i = 0; i < blocks.length - 1; i++ ) {
             var connector = blocks[i].querySelector('[data-role="' + namespace + '-block-connector"]');
@@ -285,20 +287,20 @@
     }
 
     /**
-     * Set Stages of the CheckpointJs.
+     * Set Points of the CheckpointJs.
      * Should be called before CheckpointJs#init()
      *
-     * @param arguments an array of Stage constructor.
+     * @param arguments an array of Point constructor.
      */
-    function _setStages(stages) {
-        if (Object.prototype.toString.call( stages ) === '[object Array]') {
-            for(var index in stages) {
-                var stage = stages[index];
-                if (typeof stage === "string" || typeof stage === "object") {
-                    this.stages.push(new Stage(stage));
+    function _setPoints(points) {
+        if (Object.prototype.toString.call( points ) === '[object Array]') {
+            for(var index in points) {
+                var point = points[index];
+                if (typeof point === "string" || typeof point === "object") {
+                    this.points.push(new Point(point));
                 }
                 else {
-                    console.log( "[CheckpointJS] Wrong stage parameters." );
+                    console.log( "[CheckpointJS] Wrong point parameters." );
                 }
             }
         }
@@ -306,21 +308,21 @@
     }
 
     /**
-     * Set/Get a stage
+     * Set/Get a point
      *
-     * @param index the index of the Stage
-     * @param stage the argument that used for constructing the Stage.
+     * @param index the index of the Point
+     * @param point the argument that used for constructing the Point.
      */
-    function _stage(index, stage) {
-        if (index >= 0 && index <= this.stages.length - 1) {
+    function _point(index, point) {
+        if (index >= 0 && index <= this.points.length - 1) {
             if (arguments.length === 1) {
-                return this.stages[index];
+                return this.points[index];
             } else if (arguments.length === 2) {
-                var stage = new Stage(stage);
-                if ( stage !== null ) {
-                    this.stages[index] = stage;
+                var point = new Point(point);
+                if ( point !== null ) {
+                    this.points[index] = point;
                 } else {
-                    console.log( "[CheckpointJS] Wrong stage parameters." );
+                    console.log( "[CheckpointJS] Wrong point parameters." );
                 }
             } 
         } else {
@@ -332,20 +334,20 @@
     
 
     /**
-     * Add a Stage to the Stage array (after index).
+     * Add a Point to the Point array (before index).
      *
-     * @param index the new Stage will be added before this index
-     * @param stage
+     * @param index the new Point will be added before this index
+     * @param point
      */
-    function _insertStage(index, stage) {
-        if (index < 0 || index > this.stages.length) {
+    function _insertPoint(index, point) {
+        if (index < 0 || index > this.points.length) {
             console.log( "[CheckpointJS] Wrong index." );
             return this;
         }
 
-        var newStage = new Stage(stage);
-        if (newStage) {
-            this.stages.splice(index, 0, newStage);
+        var newPoint = new Point(point);
+        if (newPoint) {
+            this.points.splice(index, 0, newPoint);
             if (index <= this.currentIndex) {
                 this.currentIndex++;
             }
@@ -358,36 +360,36 @@
     }
 
     /**
-     * Append a Stage to the end of Stages.
+     * Append a Point to the end of Points.
      *
-     * @param stage
+     * @param point
      */
-    function _appendStage(stage) {
-        var newStage = new Stage(stage);
-        if (newStage) {
-            this.stages.splice(this.stages.length, 0, newStage);
+    function _appendPoint(point) {
+        var newPoint = new Point(point);
+        if (newPoint) {
+            this.points.splice(this.points.length, 0, newPoint);
         }
 
         return this;
     }
 
     /**
-     * Remove a specific Stage.
-     * @param index the index of that Stage
+     * Remove a specific Point.
+     * @param index the index of that Point
      */
-    function _removeStage(index) {
-        if (index >= 0 && index <= this.stages.length - 1) {
-            if (index === this.currentIndex && index === this.stages.length - 1) {
+    function _removePoint(index) {
+        if (index >= 0 && index <= this.points.length - 1) {
+            if (index === this.currentIndex && index === this.points.length - 1) {
                 this.currentIndex--;
             }
-            var stage = this.stages.splice(index, 1);
-            stage.onStageCallback = null;
+            var point = this.points.splice(index, 1);
+            point.onPointCallback = null;
 
             if (this.inited) {
                 _init.call(this, this.currentIndex);
             }
         } else {
-            console.log( "[CheckpointJS] No such stage." );
+            console.log( "[CheckpointJS] No such point." );
         }
         return this;
     }
@@ -428,15 +430,15 @@
         
         init: _init,
 
-        stage: _stage,
-        setStages: _setStages,
-        insertStage: _insertStage,
-        appendStage: _appendStage,
-        removeStage: _removeStage,
+        point: _point,
+        setPoints: _setPoints,
+        insertPoint: _insertPoint,
+        appendPoint: _appendPoint,
+        removePoint: _removePoint,
 
         next: _next,
         prev: _prev,
-        atStage: _atStage,
+        reach: _reach,
         complete: _complete,
         
         reset: _reset,
