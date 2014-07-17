@@ -4,152 +4,95 @@
     <title>Checkpoint.js Demo</title>
     <link rel="stylesheet" href="css/checkpoint.css" />
     <link rel="stylesheet" href="css/demopoint.css" />
+    <link rel='stylesheet' href='css/onepage-scroll.css' />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/prism.css"  />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
 </head>
 <body style="background-image: url(img/noisy.png); overflow-x: hidden">
-<div class="overlay"></div>
-<div class="header">
-    <div class="large-circle"></div>
-    <div style="text-align: center;"><h1 style="margin-top: 0px;">Checkpoint.js Demo</h1></div>
-    <br/>
-
-    <div id="checkpoint" class="checkpoint-container"></div>
-
-    <div class="row">
-        <div class="col-lg-offset-2 col-lg-8">
-            <ul class="pager" style="position: relative; top: -90px;">
-                <li class="previous" style="position:fiexd"><a href="#" data-btn="checkpointjs-prev">&larr; Prev</a></li>
-                <li class="next" style="position:fiexd"><a href="#"  id="checkpointjs-next" data-btn="checkpointjs-next">Next &rarr;</a></li>
-            </ul>
-        </div>
-    </div>
-
-</div>
 <div class="container">
-    <div class="stage-header row">
-        <div class="tab-content col-lg-offset-2 col-lg-8">
-            <h1 id="current-stage-description"></h1>
-            <hr/>
-        </div>
-    </div>
-    <div class="stage-details row">
-        <div class="tab-content col-lg-offset-2 col-lg-8">
-            <div class="checkpoint-page checkpoint-active" id="introduction-page">
+            <section class="checkpoint-page" id="introduction-page">
+                <h3><b>Introduction</b></h3>
+                <hr/>
                 <p><b>Checkpoint.js</b> is a Javascript library that allows you to create a user interface like the <b id="trick-word">above one</b> in seconds.</p>
                 <br/>
-                <p>Here are some highlights: </p>
+                <h3><b>Some highlights</b></h3>
+                <hr/>
                 <ul>
-                    <li><b>Pure</b> Javascript/Css, no other library/framework needed</li>
-                    <li><b>4KB</b> Javascript, <b>2KB</b> CSS</li>
+                    <li><b>Pure</b> Javascript/CSS, no other library/framework needed</li>
+                    <li><b>5KB</b> Javascript, <b>2KB</b> CSS</li>
                     <li><b>Customize</b> your own CSS stylesheets (Using <a href="http://lesscss.org/" target="_blank">LESS</a>)</li>
                     <li>Open source under <b>MIT</b> license </li>
                 </ul>
+
                 <br/>
-                <p><b>Checkpoint.js</b> can be used in the following scenarios: </p>
-                <ul>
-                    <li>Status Indicator</li>
-                    <li>Progress Bar</li>
-                    <li>Timeline</li>
-                </ul>
+                <h3><b>Scroll down</b> to view more examples</h3>
+                <hr/>
+            </section>
+            <section class="checkpoint-page" id="examples-page">
+                <h3><b>Checkpoint.js</b> can be used in the following scenarios</h3>
+                <hr/>
                 <br/>
-                <p>Click <b>Next</b> button to see some examples.</p>
-            </div>
-            <div class="checkpoint-page" id="examples-page">
                 <h3>Status Indicator</h3>
                 <div id="status-demo" class="sample-checkpoint"></div>
                 <h3>Progress Bar</h3>
                 <div id="progress-demo" class="sample-checkpoint"></div>
                 <h3>Timeline</h3>
                 <div id="timeline-demo" class="sample-checkpoint"></div>
-            </div>
-
-            <div class="checkpoint-page" id="usage-page">
-                <h3>1. Init</h3>
-                <code>checkpointJs(selector, [options]);</code><br/><br/>
-                <p>
-                    Assign a DOM selector (container) to checkpoint.js. Notice that currently, the container has to be <b>80px</b> in height.
-                </p>
-                <pre><code class="language-javascript">var checkpoint = checkpointJs("#checkpoint");</code></pre>
-                
-                <h3>2. Set data</h3>
-                <code>setStages([stage, stage, stage...]);</code><br/><br/>
-                <p>
-                    For each <code>stage</code>, there are four attributes:
-                    <ul>
-                        <li><code>id</code> [string]: the id will be set to DOM</li>
-                        <li><code>title</code> [string]: the title display on this stage</li>
-                        <li><code>description</code> [string]:</li>
-                        <li><code>onStageCallback</code> [function]: the function that will be called after entering this stage</li>
-                    </ul>
-                </p>
-                <code>setStage(index, stage);</code><br/><br/>
-                <p>
-                    For each <code>stage</code>, there are four attributes:
-                    <ul>
-                        <li><code>id</code> [string]: the id will be set to DOM</li>
-                        <li><code>title</code> [string]: the title display on this stage</li>
-                        <li><code>description</code> [string]:</li>
-                        <li><code>onStageCallback</code> [function]: the function that will be called after entering this stage</li>
-                    </ul>
-                </p>
-                <pre><code class="language-javascript">
-checkpoint.setStages([{
-    id: "introduction",
-    title: "What is?",
-    description: "What is Checkpoint.js?",
-    onStageCallback: changeTab
-},{
-    id: "examples",
-    title: "Examples",
-    description: "Some Examples",
-    onStageCallback: changeTab
-}, {
-    id: "usage",
-    title: "Usage",
-    description: "Usage",
-    onStageCallback: changeTab
-}]);
+            </section>
+            <section class="checkpoint-page" id="usage-page">
+                <h3>1-2-3 Go</h3>
+                <hr/>
+                <br/>
+<pre><code class="language-javascript">
+var checkpoint = checkpointJs("#checkpoint");           
+checkpoint.setPoints([{                                 
+        id: "introduction",                             // id of the point
+        title: "What is?",                              // title of the point
+        description: "What is Checkpoint.js?",          // optional text of the point
+        onPointCallback: null
+    },{
+        id: "examples",
+        title: "Examples",
+        description: "Some Examples",
+        onPointCallback: function(index) {
+            alert(index)
+        }
+    }, {
+        id: "usage",
+        title: "Usage",
+        description: "Usage",
+        onPointCallback: null
+    }])
+checkpoint.init();                                      // initialize (draw) the Checkpoint
+checkpoint.reach(3);                                    // reach the 4th checkpoint
                 </code></pre>
-                <h3>3. Draw</h3>
-                <code>init(defaultStage);</code><br/><br/>
-                <p>
-                    Draw checkpoint.js on the UI. Notice that currently, the container has to be <b>visible</b> while drawing checkpoint.js, otherwise checkpoint.js cannot detect the width of container.
-                </p>
-                <pre><code class="language-javascript">checkpoint.init(0);</code></pre>
-                <h3>4. Control</h3>
-                <code>atStage(stageIndex);</code><br/><br/>
-                <p>
-                    Set checkpoint.js to a specific stage. The index starts from 0.
-                </p>
-                <code>next();</code><br/><br/>
-                <p>
-                    Go to next stage.
-                </p>
-                <code>prev(stageIndex);</code><br/><br/>
-                <p>
-                    Go back to previous stage.
-                </p>
-                <pre><code class="language-javascript">
-// by default, the checkpoint is at stage 0.
-checkpoint.atStage(2); // now at stage 2
-checkpoint.next(); // now at stage 3
-checkpoint.prev(); // back to stage 2 again
-                </code></pre>
-            </div>
-            <div class="checkpoint-page" id="download-page">
+         
+            </section>
+            <section class="checkpoint-page" id="download-page">
                 <p>Download <a href="https://github.com/ye11ow/checkpoint.js/archive/master.zip" target="_blank">Master</a> branch</p>
                 <p>Visit <a href="https://github.com/ye11ow/checkpoint.js">Github</a> page</p>
                 
-            </div>
-            <div class="checkpoint-page" id="history-page">history</div>
-            <div class="checkpoint-page" id="thanks-page">thanks</div>
-        </div>
-    </div>
+            </section>
+            <section class="checkpoint-page" id="history-page">history</section>
+            <section class="checkpoint-page" id="thanks-page">
+                <div class="thank">
+                    Thank <img class="love" src="img/love.png" /> You <br/>
+                </div>
+
+            </section>
 </div>
+
+<div class="header">
+    <div class="large-circle"></div>
+    <div style="text-align: center;"><h1 style="margin-top: 0px;">Checkpoint.js Demo</h1></div>
+    <br/>
+    <div id="checkpoint" class="checkpoint-container"></div>
+</div>
+
 <script src="js/checkpoint.js"></script>
 <script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/jquery.onepage-scroll.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/demo.js"></script>
 <script src="js/prism.js"></script>

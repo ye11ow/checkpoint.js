@@ -5,115 +5,65 @@
 $("document").ready(function(){
     
     var checkpoint = checkpointJs("#checkpoint");
+
+    $(".container").onepage_scroll({
+        sectionContainer: "section",
+        easing: "ease",                  // Easing options accepts the CSS3 easing animation such "ease", "linear", "ease-in", 
+                                        // "ease-out", "ease-in-out", or even cubic bezier value such as "cubic-bezier(0.175, 0.885, 0.420, 1.310)"
+        animationTime: 1000,
+        pagination: true,                // You can either show or hide the pagination. Toggle true for show, false for hide.
+        updateURL: false,
+        beforeMove: function(index) {
+            if (index >= 2) {
+                $(".container").animate({
+                    "padding-top": "100px"
+                }, 500);
+                $(".header").animate({
+                    "top": "-100px"
+                }, 500);
+            } else if (index === 1) {
+                $(".container").animate({
+                    "padding-top": "200px"
+                }, 500);
+                $(".header").animate({
+                    "top": "0px"
+                }, 500);
+            }
+            checkpoint.reach(index - 1);
+        },
+        afterMove: function(index) {},
+        loop: false,
+        keyboard: true,
+        responsiveFallback: false,
+        direction: "vertical"
+    });
     
-    checkpoint.setStages([{
+    checkpoint.setPoints([{
             id: "introduction",
             title: "What is?",
-            description: "What is Checkpoint.js?",
-            onStageCallback: changeTab
+            description: "What is Checkpoint.js?"
         },{
             id: "examples",
             title: "Examples",
-            description: "Some Examples",
-            onStageCallback: changeTab
+            description: "Some Examples"
         }, {
             id: "usage",
             title: "Usage",
-            description: "Usage",
-            onStageCallback: changeTab
+            description: "Usage"
         }, {
             id: "download",
             title: "Download",
-            description: "Download Checkpoint.js",
-            onStageCallback: changeTab
+            description: "Download Checkpoint.js"
         }, {
             id: "history",
             title: "History",
-            description: "Version History",
-            onStageCallback: changeTab
+            description: "Version History"
         }, {
             id: "thanks",
             title: "Thanks",
-            description: "Thank you!",
-            onStageCallback: changeTab
+            description: "Thank you!"
         }]).init(0);
-    
 
-    function changeTab(stage) {
-        $("#current-stage-description").text(stage.description);
-    }
-
-    $("body").on("click", "[data-btn='checkpointjs-next']", function(){
-        var self = this,
-            $prevPage = $(".checkpoint-active"),
-            $currentPage = $prevPage.next();
-
-        if ($currentPage.length == 0) {
-            return;
-        }
-        self.disabled = true;
-        checkpoint.next();
-
-        $("body").css("overflow-y", "hidden");
-        
-        $prevPage.animate({
-            "margin-left": "-200%"
-        }, 400, function() {
-            $prevPage.removeClass("checkpoint-active");
-            $("body").css("overflow-y", "auto");
-        });
-        $currentPage.addClass("checkpoint-active");
-        $currentPage.animate({
-            "margin-left": ""
-        }, 400, function(){
-            self.disabled = false;
-            if ( checkpoint.currentIndex === 1 ) {
-                statusDemo.init(2);
-                progressDemo.init(4);
-                timelineDemo.init(1);
-            }
-        });
-    });
-    
-    $("body").on("click", "[data-btn='checkpointjs-prev']", function(){
-        var self = this,
-            $prevPage = $(".checkpoint-active"),
-            $currentPage = $prevPage.prev();
-
-        if ($currentPage.length == 0) {
-            return;
-        }
-        self.disabled = true;
-        checkpoint.prev();
-
-        $("body").css("overflow-y", "hidden");
-        
-        $prevPage.animate({
-            "margin-left": "200%"
-        }, 400, function() {
-            $prevPage.removeClass("checkpoint-active");
-            $("body").css("overflow-y", "auto");
-        });
-        $currentPage.addClass("checkpoint-active");
-        $currentPage.animate({
-            "margin-left": ""
-        }, 400, function(){
-            self.disabled = false;
-        });
-    });
-    
-    var activeIndex = $(".checkpoint-page").length;
-    $(".checkpoint-page").each( function(index) {
-        if ( $(this).hasClass("checkpoint-active") ) {
-            activeIndex = index;
-        }
-        if ( index < activeIndex ) {
-            $(this).css("margin-left", "-200%"); 
-        } else if ( index > activeIndex ) {
-            $(this).css("margin-left", "200%" ); 
-        }
-    });
-    
     $("#trick-word").hover(function(){
         $(".checkpoint-container").fadeTo('slow', 0.1).fadeTo('slow', 1.0);
     }, function(){
@@ -122,22 +72,20 @@ $("document").ready(function(){
         }, 800);
     });
     
-
-
     var statusDemo = checkpointJs("#status-demo", {namespace: "demopoint"});
-    statusDemo.setStages(
+    statusDemo.setPoints(
         ["Picked Up", "Preparing", "In Transit", "At Local", "Delivering", "Delivered"]
-    );
+    ).init(3);
 
     var progressDemo = checkpointJs("#progress-demo", {namespace: "demopoint"});
-    progressDemo.setStages(
+    progressDemo.setPoints(
         ["0%", "25%", "50%", "75%", "100%"]
-    );
+    ).init(2);
 
     var timelineDemo = checkpointJs("#timeline-demo", {namespace: "demopoint"});
-    timelineDemo.setStages(
+    timelineDemo.setPoints(
         ["Jan, 2013", "Feb, 2013", "Mar, 2013", "April, 2013", "May, 2013", "June, 2013"]
-    );
+    ).init(5);
 
 });
 
