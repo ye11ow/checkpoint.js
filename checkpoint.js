@@ -2,7 +2,7 @@
 /* global exports, define */
 
 /**
- * @Author Calvin (Min) Zhang
+ * @Author Calvin Zhang
  * @Email ye111111ow at gmail.com
  */
 
@@ -15,6 +15,10 @@
         factory(root);
     }
 }(this, function (exports) {
+
+    var STATUS_NOTHING_CHANGED  = 0,
+        STATUS_POINT_CHANGED    = 1,
+        STATUS_INDEX_CHANGED    = 2;
 
     var DEFAULT_STAGE = {
         id: "",
@@ -37,13 +41,15 @@
         this.points = [];
         this.currentIndex = 0;
         this.inited = false;
+        this.changed = STATUS_NOTHING_CHANGED;
         
         /* Set default options */
         this._options = {
             namespace: "checkpoint",
             direction: "right",
             theme: "default",
-            debug: false
+            debug: false,
+            autoRender: true
         };
         
         /* Override default options */
@@ -104,8 +110,34 @@
         this.destroy();
         if (typeof this.checkpointJs == "object") {
             this.inited = true;
+            this.currentIndex = at;
+
+            _pointChanged.call(this);
+            _resize.call(this);
+            return this;
+        }
+    }
+
+    /**
+     * Render DOM
+     */
+    function _render(at) {
+        var namespace = this._options.namespace,
+            pointDom = null,
+            i = 0;
+
+        // init before render.
+        if (!this.inited || !this.changed) {
+            return this;
+        }
+
+        // if the content of points has been changed,
+        // clear previous DOM and create new ones.
+        if (this.changed === STATUS_POINT_CHANGED) {
+            _destroy.call(this);
+
             if (typeof at != "number") {
-                at = 0;
+                at = this.currentIndex;
             }
             
             for ( var i = 0; i< this.points.length; i++ ) {
@@ -115,14 +147,32 @@
                     this.points[i].type = "end";
                 }
                 var point = this.points[i];
-                var pointDom = _createDomFromPoint.call(this, point, i, at);
+                var pointDom = _createDomFromPoint.call(this, namespace, point, i, at);
                 this.checkpointJs.appendChild(pointDom);
             }
             this.currentIndex = at;
             _resize.call(this);
-            _markPoints.call(this, this.currentIndex);
-            return this;
         }
+
+        // mark the current point
+        for (i = 0;i < at;i++) {
+            pointDom = this.checkpointJs.querySelector( '[data-index="' + i + '"]' );
+            pointDom.setAttribute( "class", namespace + "-block " + namespace + "-done" );
+        }
+        for (i = at + 1;i < this.points.length;i++) {
+            pointDom = this.checkpointJs.querySelector( '[data-index="' + i + '"]' );
+            pointDom.setAttribute( "class", namespace + "-block " + namespace + "-default" );
+        }
+        pointDom = this.checkpointJs.querySelector(  '[data-index="' + at + '"]' );
+        pointDom.setAttribute( "class", namespace + "-block " + namespace + "-current" );
+        
+        // trigger onPoint callback
+        if (typeof this.points[at].onPointCallback === "function") {
+            this.points[at].onPointCallback(this.points[at]);
+        }
+
+        // reset changed flag
+        this.changed = STATUS_NOTHING_CHANGED;
     }
 
     /**
@@ -131,7 +181,7 @@
     function _next() {
         if ( this.currentIndex < this.points.length - 1 ) {
             this.currentIndex++;
-            _markPoints.call(this, this.currentIndex);
+            _indexChanged.call(this);
         } else {
             console.log( "[CheckpointJS] No next point." );
         }
@@ -144,7 +194,7 @@
     function _prev() {
         if ( this.currentIndex > 0 ) {
             this.currentIndex--;
-            _markPoints.call(this, this.currentIndex);
+            _indexChanged.call(this);
         } else {
             console.log( "[CheckpointJS] No previous point." );
         }
@@ -156,19 +206,19 @@
      */
     function _complete() {
         this.currentIndex = this.points.length - 1;
-        _markPoints.call(this, this.currentIndex);
+        _indexChanged.call(this);
         return this;
     }
 
     /**
      * Move to a specific Point
      *
-     * @param index the index of Point, started from 0.
+     * @param at the index of Point, started from 0.
      */
-    function _reach(index) {
-        if (index >= 0 && index <= this.points.length - 1) {
-            this.currentIndex = index;
-            _markPoints.call(this, this.currentIndex);
+    function _reach(at) {
+        if (at >= 0 && at <= this.points.length - 1) {
+            this.currentIndex = at;
+            _indexChanged.call(this);
         } else {
             console.log( "[CheckpointJS] No such point." );
         }
@@ -180,38 +230,8 @@
      */
     function _reset() {
         this.currentIndex = 0;
-        _markPoints.call(this, this.currentIndex);
+        _indexChanged.call(this);
         return this;
-    }
-
-    /**
-     * Mark all Points before the index one as done. Mark all Points after the index one as todo.
-     * The callee must make sure the index is correct.
-     *
-     * @private
-     */
-    function _markPoints(index) {
-        var namespace = this._options.namespace,
-            pointDom = null,
-            i = 0;
-
-        if (this.inited) {
-            for (i = 0;i < index;i++) {
-                pointDom = this.checkpointJs.querySelector( '[data-index="' + i + '"]' );
-                pointDom.setAttribute( "class", namespace + "-block " + namespace + "-done" );
-            }
-            for (i = index + 1;i < this.points.length;i++) {
-                pointDom = this.checkpointJs.querySelector( '[data-index="' + i + '"]' );
-                pointDom.setAttribute( "class", namespace + "-block " + namespace + "-default" );
-            }
-            pointDom = this.checkpointJs.querySelector(  '[data-index="' + index + '"]' );
-            pointDom.setAttribute( "class", namespace + "-block " + namespace + "-current" );
-        }
-        
-        /* OnPoint Callback */
-        if (typeof this.points[index].onPointCallback === "function") {
-            this.points[index].onPointCallback(this.points[index]);
-        }
     }
 
     /**
@@ -222,9 +242,8 @@
      *
      * @private
      */
-    function _createDomFromPoint( point, index, at ) {
-        var blockTitleDom = document.createElement( "div" ),
-            namespace = this._options.namespace;
+    function _createDomFromPoint( namespace, point, index, at ) {
+        var blockTitleDom = document.createElement( "div" );
                 
         blockTitleDom.setAttribute( "data-role", namespace + "-block-title" );
         if ( index % 2 === 0 ) {
@@ -282,8 +301,6 @@
             connector.style["margin-left"] = blockWidth / 2 + 8 + "px";
             connector.style.width = blockWidth - 16 + "px";
         }
-        
-
     }
 
     /**
@@ -303,6 +320,8 @@
                     console.log( "[CheckpointJS] Wrong point parameters." );
                 }
             }
+
+            _pointChanged.call(this);
         }
         return this;
     }
@@ -321,6 +340,8 @@
                 var point = new Point(point);
                 if ( point !== null ) {
                     this.points[index] = point;
+
+                    _pointChanged.call(this);
                 } else {
                     console.log( "[CheckpointJS] Wrong point parameters." );
                 }
@@ -351,9 +372,7 @@
             if (index <= this.currentIndex) {
                 this.currentIndex++;
             }
-            if (this.inited) {
-                _init.call(this, this.currentIndex);
-            }
+            _pointChanged.call(this);
         }
         
         return this;
@@ -370,6 +389,8 @@
             this.points.splice(this.points.length, 0, newPoint);
         }
 
+        _pointChanged.call(this);
+
         return this;
     }
 
@@ -385,12 +406,27 @@
             var point = this.points.splice(index, 1);
             point.onPointCallback = null;
 
-            if (this.inited) {
-                _init.call(this, this.currentIndex);
-            }
+            _pointChanged.call(this);
         } else {
             console.log( "[CheckpointJS] No such point." );
         }
+        return this;
+    }
+
+    /**
+     *
+     */
+    function _pointChanged() {
+        this.changed = STATUS_POINT_CHANGED;
+        this._options.autoRender && _render.call(this);
+        return this;
+    }
+
+    function _indexChanged() {
+        if (this.changed < STATUS_INDEX_CHANGED) {
+            this.changed = STATUS_INDEX_CHANGED;
+        }
+        this._options.autoRender && _render.call(this);
         return this;
     }
 
@@ -405,6 +441,7 @@
             }
         }
         this.inited = false;
+        this.changed = STATUS_NOTHING_CHANGED;
         return this;
     }
 
@@ -429,6 +466,7 @@
         },
         
         init: _init,
+        render: _render,
 
         point: _point,
         setPoints: _setPoints,

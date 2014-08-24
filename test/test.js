@@ -67,8 +67,6 @@ describe('Checkpoint', function(){
         });
     });
 
-
-
     describe('#appendPoint', function(){
         it('should append a point to the end of points', function(){
             var length = checkpoint.points.length;
@@ -157,6 +155,39 @@ describe('Checkpoint', function(){
             expect(checkpoint).to.have.property('currentIndex', checkpoint.points.length - 1);
         });
     });
+
+    describe('#init', function(){
+        it('should render DOM', function(){
+            expect(checkpoint).to.have.property('changed', 2);
+
+            checkpoint.init(0);
+
+            expect(checkpoint).to.have.property('changed', 0);
+        });
+    });
+
+    describe('autoRender', function() {
+        it('should not render DOM', function(){
+            var dom = document.getElementById("checkpoint");
+            while(dom.firstChild){
+                dom.removeChild(dom.firstChild);
+            }
+            var autoRenderOff = checkpointJs("#checkpoint", {autoRender: false});
+
+            autoRenderOff.setPoints([{
+                id: "first",
+                title: "first"
+            },{
+                id: "second",
+                title: "second"
+            }, {
+                id: "third",
+                title: "third"
+            }]).init(0);
+
+            expect(autoRenderOff).to.have.property('changed', 2);
+        });
+    })
 
 
 })
